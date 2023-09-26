@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,15 @@ class Profile:AppCompatActivity() {
 
 
             }
+        }
+        var back = findViewById<ImageButton>(R.id.back_btn)
+        back.setOnClickListener()
+        {
+            val intent = Intent(this@Profile, Home::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
         }
         val forgotpassword:Button = findViewById(R.id.forgot)
         forgotpassword.setOnClickListener(){
@@ -194,7 +204,7 @@ val id = churchid.text.toString().replace("\\s".toRegex(), "")
                     val size = userDetails["centersize"].toString()
                     val id = userDetails["churchid"].toString()
                     val place = userDetails["country"].toString()
-                    val churchname = userDetails["whorshipname"].toString()
+                    val churchname = userDetails["worshipname"].toString()
                     phone.setText(phonenumber)
                     namefield.setText(name)
                     surname.setText(surnames)

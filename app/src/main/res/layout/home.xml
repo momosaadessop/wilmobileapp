@@ -14,6 +14,66 @@
         android:background="#F57F17">
 
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            app:menu_labels_ellipsize="end"
+            app:menu_labels_singleLine="true">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/profile_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_account"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logout"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/finance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_finance"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_event"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/pastor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pastor"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_member"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
+
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView

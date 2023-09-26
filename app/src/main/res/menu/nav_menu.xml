@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/menu_profile"
-
+        android:icon="@drawable/ic_account"
         android:title="Profile"
         />
 
@@ -54,8 +54,8 @@
 
             <item
                 android:id="@+id/menu_finance"
-
-                android:title="Profile"
+                android:icon="@drawable/ic_finance"
+                android:title="Finance"
                 />
 
             <item

@@ -43,7 +43,7 @@ class Login : AppCompatActivity() {
             val result = parts[0] + parts[1]
             Log.d("resultemail", result)
             val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("pastors").document(result)
+            val docRef = db.collection("pastors").document(result.lowercase())
             docRef.get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
@@ -53,7 +53,7 @@ class Login : AppCompatActivity() {
                         toast.show()
                         val auth = FirebaseAuth.getInstance()
                         auth.createUserWithEmailAndPassword(
-                            emails.text.toString(),
+                            emails.text.toString().lowercase(),
                             pass.text.toString()
                         )
                             .addOnCompleteListener(this) { task ->
