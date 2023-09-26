@@ -23,6 +23,7 @@ class Profile:AppCompatActivity() {
         setContentView(R.layout.profiles)
         supportActionBar?.hide()
         securGuard()
+        dataload()
         val loginBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val intent = Intent(this@Profile, Home::class.java)
@@ -190,12 +191,18 @@ val id = churchid.text.toString().replace("\\s".toRegex(), "")
                     val surnames = userDetails["surname"].toString()
                     val emails = userDetails["email"].toString()
                     val phonenumber = userDetails["phonenumber"].toString()
-
+                    val size = userDetails["centersize"].toString()
+                    val id = userDetails["churchid"].toString()
+                    val place = userDetails["country"].toString()
+                    val churchname = userDetails["whorshipname"].toString()
                     phone.setText(phonenumber)
                     namefield.setText(name)
                     surname.setText(surnames)
                     email.setText(emails)
-
+                    centersize.setText(size)
+                    churchid.setText(id)
+                    country.setText(place)
+                    church.setText(churchname)
                 } else {
                     Log.d(ContentValues.TAG, "No such document")
                 }
