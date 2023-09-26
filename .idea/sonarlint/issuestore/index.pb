@@ -21,3 +21,15 @@ A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 F
 app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
+m
+=app/src/main/java/com/varsitycollege/htchurchmobile/Errors.kt,b\c\bcfc8c291f2c1309390c2b2019f65696dc9f6fd8
+n
+>app/src/main/java/com/varsitycollege/htchurchmobile/Storage.kt,6\0\603a75e408fdf1db9913d97125d5958c9390a5d8
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+l
+<app/src/main/java/com/varsitycollege/htchurchmobile/Login.kt,c\7\c783619abd0fca109e90db05231f9e7c2d25a0e0
+n
+>app/src/main/java/com/varsitycollege/htchurchmobile/Pastors.kt,b\e\be1b6e196ae30d2f8436f3cbe717aaffba69ff0b
+n
+>app/src/main/java/com/varsitycollege/htchurchmobile/Members.kt,1\3\13f9bcbe2b4ec1896f09c34c520c14c488f2f216
