@@ -4,122 +4,165 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_above="@id/finance_info"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/ic_arrow_back"
+        android:layout_gravity="left"/>
+
+    <ImageButton
+        android:id="@+id/history_btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@id/finance_info"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_history"
+        android:layout_gravity="left"/>
+
+
     <TextView
-        android:id="@+id/event_title"
-        android:layout_width="match_parent"
+        android:id="@+id/finance_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="Finances"
         android:textSize="38sp"/>
 
-    <LinearLayout
-        android:id="@+id/event_main"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/finance_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/event_title"
-        android:layout_above="@id/event_info"
-        android:orientation="vertical"
-        android:fillViewport="true"
-        android:padding="20dp"
-        android:gravity="center">
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/finance_title">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="350dp"
-            android:layout_height="250dp"
-            app:cardCornerRadius="25dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#81E4E4E4">
-
-                <TextView
-                    android:id="@+id/balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="R5000.00"
-                    android:textSize="40sp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
-
-                <TextView
-                    android:id="@+id/balance_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@id/balance"
-                    android:text="Total:"
-                    android:textSize="35sp"
-                    android:gravity="center"/>
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/event_info"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/cardview_top_radius">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/cardview_top_radius"
-            android:padding="15dp">
+            android:padding="20dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Tighes:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Card Details"
-                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R:"
+                    android:textStyle="bold"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="250"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Donations:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R:"
+                    android:textStyle="bold"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="340"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Fund Raiser:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="R:"
+                    android:textStyle="bold"
+                    android:textSize="17sp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="520"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="History:"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:textSize="23sp"/>
+                android:layout_gravity="center_horizontal"/>
 
-            <EditText
-                android:id="@+id/editTextEventName"
+            <ListView
+                android:id="@+id/finance_history"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="#F7B96C"
-                android:text="Card No."
-                android:textSize="20sp"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/editTextEventLocation"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="#F7B96C"
-                android:textSize="20sp"
-                android:text="CVV"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/editTextEventDate"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:background="#F7B96C"
-                android:text="Expiry Date"
-                android:inputType="date" />
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"/>
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="History"
-                android:textSize="15sp"
-                android:layout_gravity="right"
-                android:layout_margin="10dp"
-                android:textColor="@color/black"
-                android:backgroundTint="#F6E39C"/>
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Confirm"
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
+
+        </ScrollView>
 
     </androidx.cardview.widget.CardView>
 
