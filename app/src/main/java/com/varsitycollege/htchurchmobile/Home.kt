@@ -1,8 +1,12 @@
 package com.varsitycollege.htchurchmobile
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -10,6 +14,7 @@ import com.github.clans.fab.FloatingActionButton
 import com.github.clans.fab.FloatingActionMenu
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Home:AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -51,7 +56,7 @@ class Home:AppCompatActivity() {
 
                 R.id.menu_pastor-> {
 
-                    val intent = Intent(this, Pastors::class.java)
+                    val intent = Intent(this, ViewPastors::class.java)
 
                     startActivity(intent)
                     overridePendingTransition(0, 0)
@@ -80,10 +85,23 @@ class Home:AppCompatActivity() {
                 }
 
                 R.id.menu_secretary -> {
+                    val intent = Intent(this, secratary::class.java)
 
+                    startActivity(intent)
+                    overridePendingTransition(0, 0)
+                    finish()
                     true
                 }
 
+                R.id.menu_church_details-> {
+
+                    val intent = Intent(this,ChurchDetails::class.java)
+
+                    startActivity(intent)
+                    overridePendingTransition(0, 0)
+                    finish()
+                    true
+                }
                 else -> false
             }
 
@@ -136,7 +154,7 @@ class Home:AppCompatActivity() {
         val pastors: FloatingActionButton = findViewById(R.id.pastor)
         pastors.setOnClickListener {
 
-            val intent = Intent(this, Pastors::class.java)
+            val intent = Intent(this, ViewPastors::class.java)
 
             startActivity(intent)
             overridePendingTransition(0, 0)
@@ -170,5 +188,39 @@ class Home:AppCompatActivity() {
     }
     private fun signout() {
         FirebaseAuth.getInstance().signOut()
+    }
+    fun IDload() {
+
+        val churchid: EditText = findViewById(R.id.church_id)
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        val userEmail = user?.email
+
+
+        val parts = userEmail!!.split('@', '.')
+        val userID = parts[0] + parts[1]
+        Log.d("userid", userID)
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("pastors").document(userID)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                    val userDetails = document.get("userDetails") as Map<String, Any>
+
+                    val id = userDetails["churchid"].toString()
+
+                    churchid.setText(id)
+
+                } else {
+                    Log.d(ContentValues.TAG, "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(ContentValues.TAG, "get failed with ", exception)
+            }
+
+
     }
 }

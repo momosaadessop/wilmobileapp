@@ -168,7 +168,7 @@ val id = churchid.text.toString().replace("\\s".toRegex(), "")
         val users = User(
             name, surnames, emails, churchname,centeramount,place,id, userID, phones.toInt()
         )
-        val docRef = db.collection("aves").document(userID)
+        val docRef = db.collection("pastors").document(userID)
         docRef.set(
             mapOf("userDetails" to users), SetOptions.merge()
         )

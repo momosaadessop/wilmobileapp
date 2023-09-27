@@ -41,7 +41,16 @@ data class User(
     val phone:Int
 
 )
+data class churchdetail(
+    val churchid: String,
+    val churchname: String,
+    val members: String,
+    val pastors:String,
+    val location:String,
 
+
+
+)
 data class BreakStorage(
     val breakName:String,
     val breakTask:String,

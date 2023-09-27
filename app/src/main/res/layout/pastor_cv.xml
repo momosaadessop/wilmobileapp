@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="15dp">
 
@@ -47,14 +47,14 @@
             <TextView
                 android:id="@+id/pastor_email"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="email"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/sec_worship"
+                android:id="@+id/pastor_churchid"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="church id"
                 android:textSize="18sp" />
 
