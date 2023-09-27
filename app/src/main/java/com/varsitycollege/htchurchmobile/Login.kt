@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import de.keyboardsurfer.android.widget.crouton.Crouton
+import de.keyboardsurfer.android.widget.crouton.Style
 
 class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +23,11 @@ class Login : AppCompatActivity() {
         supportActionBar?.hide()
         check()
         autologin()
+        var forgot = findViewById<TextView>(R.id.forgotpassword)
+        forgot.setOnClickListener()
+        {
+            forgotpassword()
+        }
 
     }
     private fun autologin() {
@@ -84,6 +93,20 @@ class Login : AppCompatActivity() {
 
         }
 
+
+    }
+    fun forgotpassword() {
+        var email: EditText = findViewById(R.id.profile_Email)
+        val auth = FirebaseAuth.getInstance()
+        auth.sendPasswordResetEmail(email.text.toString())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val crouton = Crouton.makeText(this, "forgot email sent", Style.ALERT)
+                    crouton.show()
+                } else {
+                    // There was an error. Handle it here.
+                }
+            }
 
     }
 }

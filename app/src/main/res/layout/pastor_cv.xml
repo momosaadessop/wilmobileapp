@@ -52,7 +52,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/pastor_churchid"
+                android:id="@+id/sec_churchname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="church id"

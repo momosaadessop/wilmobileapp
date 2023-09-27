@@ -73,6 +73,9 @@ class ChurchDetails:AppCompatActivity() {
             }
         }
     }
+    class DataClass {
+        var data: String = ""
+    }
     fun IDload() {
 
         val churchid: EditText = findViewById(R.id.church_id)
@@ -94,9 +97,11 @@ class ChurchDetails:AppCompatActivity() {
                     val userDetails = document.get("userDetails") as Map<String, Any>
 
                     val id = userDetails["churchid"].toString()
+                    val iddata = DataClass()
+                    iddata.data = id
 
                     churchid.setText(id)
-                    Dataload()
+                    Dataload(iddata)
 
                 } else {
                     Log.d(ContentValues.TAG, "No such document")
@@ -108,7 +113,7 @@ class ChurchDetails:AppCompatActivity() {
 
 
     }
-    fun Dataload() {
+    fun Dataload(data:DataClass) {
 
         val churchid: EditText = findViewById(R.id.church_id)
         val churchname: EditText = findViewById(R.id.church_Name)
@@ -128,7 +133,7 @@ class ChurchDetails:AppCompatActivity() {
         val userID = parts[0] + parts[1]
         Log.d("userid", userID)
         val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("churchs").document(churchid.text.toString())
+        val docRef = db.collection("churchs").document(data.data.toString())
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {

@@ -86,7 +86,7 @@ class pastoradaptor(private val birds: List<Pastordata>) : RecyclerView.Adapter<
         val firstName: TextView = view.findViewById(R.id.pastor_name)
         val SurName: TextView = view.findViewById(R.id.pastor_surname)
         val email: TextView = view.findViewById(R.id.pastor_email)
-        val churchid: TextView = view.findViewById(R.id.pastor_churchid)
+        val churchid: TextView = view.findViewById(R.id.sec_churchname)
 
     }
 
