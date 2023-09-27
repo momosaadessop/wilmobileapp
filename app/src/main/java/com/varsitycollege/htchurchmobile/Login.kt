@@ -96,7 +96,7 @@ class Login : AppCompatActivity() {
 
     }
     fun forgotpassword() {
-        var email: EditText = findViewById(R.id.profile_Email)
+        var email: EditText = findViewById(R.id.usernametxt)
         val auth = FirebaseAuth.getInstance()
         auth.sendPasswordResetEmail(email.text.toString())
             .addOnCompleteListener { task ->
