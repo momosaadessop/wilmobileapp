@@ -116,7 +116,7 @@ class AddSec : AppCompatActivity() {
                     val iddata = DataClass()
                     iddata.data = id
 
-                    upload(iddata)
+                    addtodb(iddata)
 
 
                 } else {
@@ -130,7 +130,7 @@ class AddSec : AppCompatActivity() {
 
     }
 
-    private fun upload(data: DataClass) {
+    private fun addtodb(data: DataClass) {
 
 
         val firstname = findViewById<EditText>(R.id.sec_name)
