@@ -15,7 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import de.keyboardsurfer.android.widget.crouton.Crouton
 import de.keyboardsurfer.android.widget.crouton.Style
-import org.checkerframework.common.returnsreceiver.qual.This
 
 class ChurchDetails:AppCompatActivity() {
     private val e = Errors()
@@ -48,7 +47,7 @@ class ChurchDetails:AppCompatActivity() {
             overridePendingTransition(0, 0)
             finish()
         }
-        var savedata = findViewById<Button>(R.id.confirm_btn)
+        var savedata = findViewById<Button>(R.id.sec_confirm_btn)
         savedata.setOnClickListener()
         {
             editdata()
@@ -78,7 +77,7 @@ class ChurchDetails:AppCompatActivity() {
     }
     fun IDload() {
 
-        val churchid: EditText = findViewById(R.id.church_id)
+        val churchid: EditText = findViewById(R.id.profile_church_id)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -115,7 +114,7 @@ class ChurchDetails:AppCompatActivity() {
     }
     fun Dataload(data:DataClass) {
 
-        val churchid: EditText = findViewById(R.id.church_id)
+        val churchid: EditText = findViewById(R.id.profile_church_id)
         val churchname: EditText = findViewById(R.id.church_Name)
 
         val place: EditText = findViewById(R.id.location)
@@ -163,7 +162,7 @@ place.setText(location)
         val place: EditText = findViewById(R.id.location)
 
         val memberno:EditText = findViewById(R.id.member_number)
-        val churchid:EditText = findViewById(R.id.church_id)
+        val churchid:EditText = findViewById(R.id.profile_church_id)
         val pastorno:EditText = findViewById(R.id.pastor_number)
 
 

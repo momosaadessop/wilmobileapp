@@ -44,21 +44,21 @@ class ViewPastors:AppCompatActivity() {
     }
     fun print()
     {
-        val recyclerView = findViewById<RecyclerView>(R.id.pastor_recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val pastordisplay = findViewById<RecyclerView>(R.id.pastor_recyclerView)
+        pastordisplay.layoutManager = LinearLayoutManager(this)
         val db = FirebaseFirestore.getInstance()
 
         db.collection("pastors")
             .get()
             .addOnSuccessListener { result ->
                 val pastors = result.mapNotNull { document ->
-                    val memberDetails = document.get("userDetails") as? HashMap<*, *>
-                    if (memberDetails != null) {
+                    val PastorProfiles = document.get("userDetails") as? HashMap<*, *>
+                    if (PastorProfiles != null) {
                         Pastordata(
-                            firstname = memberDetails["firstname"] as? String ?: "",
-                            surname = memberDetails["surname"] as? String ?: "",
-                            email = memberDetails["email"] as? String ?: "",
-                            churchid = memberDetails["churchid"] as? String ?: "",
+                            firstname = PastorProfiles["firstname"] as? String ?: "",
+                            surname = PastorProfiles["surname"] as? String ?: "",
+                            email = PastorProfiles["email"] as? String ?: "",
+                            churchid = PastorProfiles["churchid"] as? String ?: "",
                         ).also {
                             Log.d("Firestore", "Fetched pastor: $it")
                         }
@@ -66,7 +66,7 @@ class ViewPastors:AppCompatActivity() {
                         null
                     }
                 }
-                recyclerView.adapter = pastoradaptor(pastors)
+                pastordisplay.adapter = pastoradaptor(pastors)
             }
 
 

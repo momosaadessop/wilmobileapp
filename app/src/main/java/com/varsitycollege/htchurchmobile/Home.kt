@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -191,7 +190,7 @@ class Home:AppCompatActivity() {
     }
     fun IDload() {
 
-        val churchid: EditText = findViewById(R.id.church_id)
+        val churchid: EditText = findViewById(R.id.profile_church_id)
 
         val user = FirebaseAuth.getInstance().currentUser
 

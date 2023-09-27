@@ -62,12 +62,12 @@ IDload()
     fun IDload() {
 
 
-        val user = FirebaseAuth.getInstance().currentUser
+        val LoggedinProfile = FirebaseAuth.getInstance().currentUser
 
-        val userEmail = user?.email
+        val regEmail = LoggedinProfile?.email
 
 
-        val parts = userEmail!!.split('@', '.')
+        val parts = regEmail!!.split('@', '.')
         val userID = parts[0] + parts[1]
         Log.d("userid", userID)
         val db = FirebaseFirestore.getInstance()
@@ -76,9 +76,9 @@ IDload()
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
-                    val userDetails = document.get("userDetails") as Map<String, Any>
+                    val profiles = document.get("userDetails") as Map<String, Any>
 
-                    val id = userDetails["churchid"].toString()
+                    val id = profiles["churchid"].toString()
                     val iddata = DataClass()
                     iddata.data = id
                     printDATA(iddata)
@@ -109,20 +109,20 @@ IDload()
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    val secs = document.data?.get("secs") as? Map<String, Map<String, String>>
+                    val secs = document.data?.get("secretary") as? Map<String, Map<String, String>>
                     if (secs != null) {
-                        val birdsList = secs.values.map {
+                        val seclist = secs.values.map {
                             Sec(
                                 it["firstname"]!!,
                                 it["surname"]!!,
                                 it["email"]!!,
-                                it["worshipname"]!!,
+                                it["churchname"]!!,
                                 it["churchid"]!!,
-                                it["date"]!!
+                                it["datestart"]!!
                             )
                         }
-                        recyclerview.adapter = SecAdapter(birdsList)
-                        Log.d("Firestore", birdsList.toString())
+                        recyclerview.adapter = SecAdapter(seclist)
+                        Log.d("Firestore", seclist.toString())
                     } else {
                         Log.d("Firestore", "No birdObservations in document")
                     }
@@ -179,7 +179,7 @@ class SecAdapter(private val birds: List<Sec>) : RecyclerView.Adapter<SecAdapter
             val context = holder.itemView.context
             val intent = Intent(context, EditSec::class.java)
             intent.putExtra("birdid", clickedData.email)
-            intent.putExtra("birdid", clickedData.id)
+
 
 
             context.startActivity(intent)

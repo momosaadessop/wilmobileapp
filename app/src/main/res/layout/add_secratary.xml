@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Secretary"
+        android:text="Add a Secretary"
         android:textStyle="bold"
         android:textSize="35sp"
         android:gravity="center"/>
@@ -41,14 +41,48 @@
                 android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/church_Name"
+                android:id="@+id/sec_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
-                android:text="Name"
+                android:hint="Name"
                 android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Surname:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_surname"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textAlignment="center"
+                android:background="#F7B96C"
+                android:hint="surname"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:textAlignment="center"
+                android:hint="email"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -57,69 +91,70 @@
                 android:textStyle="bold"
                 android:textSize="25sp" />
 
-            <EditText
-                android:id="@+id/church_id"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:textAlignment="center"
-                android:background="#F7B96C"
-                android:text="id"
-                android:textSize="23sp"
-                android:layout_marginTop="30dp"/>
-
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Number of Members:"
-                android:textStyle="bold"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/member_number"
+                android:id="@+id/sec_church_id"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
                 android:textAlignment="center"
-                android:text="members"
-                android:textSize="23sp"
-                android:layout_marginTop="30dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Number of Pastors:"
-                android:textStyle="bold"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/pastor_number"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#F7B96C"
-                android:textAlignment="center"
-                android:text="pastors"
+                android:hint="church id"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location:"
+                android:text="Church Name:"
                 android:textStyle="bold"
                 android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/location"
+                android:id="@+id/sec_church_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
-                android:text="location"
+                android:textAlignment="center"
+                android:hint="church name"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Date:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_date"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:hint="date"
+                android:textAlignment="center"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone Number:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:hint="number"
+                android:inputType="phone"
                 android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
 
             <Button
-                android:id="@+id/confirm_btn"
+                android:id="@+id/save_sec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Confirm"

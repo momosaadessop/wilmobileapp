@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <ImageButton
-        android:id="@+id/back_btn"
+        android:id="@+id/back_btn_edit"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_above="@id/member_recyclerView"
@@ -41,7 +41,7 @@
                 android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/church_Name"
+                android:id="@+id/sec_name_edit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
@@ -53,73 +53,108 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Surname:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_surname_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textAlignment="center"
+                android:background="#F7B96C"
+                android:text="surname"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:textStyle="bold"
+                android:textSize="25sp" />
+
+            <EditText
+                android:id="@+id/sec_email_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:textAlignment="center"
+                android:text="email"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Church ID:"
                 android:textStyle="bold"
                 android:textSize="25sp" />
 
-            <EditText
-                android:id="@+id/church_id"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:textAlignment="center"
-                android:background="#F7B96C"
-                android:text="id"
-                android:textSize="23sp"
-                android:layout_marginTop="30dp"/>
-
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Number of Members:"
-                android:textStyle="bold"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/member_number"
+                android:id="@+id/sec_church_id_edit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
                 android:textAlignment="center"
-                android:text="members"
-                android:textSize="23sp"
-                android:layout_marginTop="30dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Number of Pastors:"
-                android:textStyle="bold"
-                android:textSize="25sp" />
-
-            <EditText
-                android:id="@+id/pastor_number"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#F7B96C"
-                android:textAlignment="center"
-                android:text="pastors"
+                android:text="church id"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location:"
+                android:text="Church Name:"
                 android:textStyle="bold"
                 android:textSize="25sp" />
 
             <EditText
-                android:id="@+id/location"
+                android:id="@+id/sec_church_name_edit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
-                android:text="location"
                 android:textAlignment="center"
+                android:text="church name"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Date:"
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/sec_date_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:text="Start Date:"
+                android:textAlignment="center"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone Number:"
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+
+            <EditText
+                android:id="@+id/sec_phone_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#F7B96C"
+                android:text="Phone"
+                android:inputType="phone"
+                android:textAlignment="center"
+                android:textSize="23sp"
+                android:layout_marginTop="30dp"/>
 
             <Button
-                android:id="@+id/confirm_btn"
+                android:id="@+id/sec_confirm_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Confirm"

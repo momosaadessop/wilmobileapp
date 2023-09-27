@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.Spinner
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +16,7 @@ import com.google.firebase.firestore.SetOptions
 import de.keyboardsurfer.android.widget.crouton.Crouton
 import de.keyboardsurfer.android.widget.crouton.Style
 
-class Profile:AppCompatActivity() {
+class Profile : AppCompatActivity() {
     private val e = Errors()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,22 +44,22 @@ class Profile:AppCompatActivity() {
             overridePendingTransition(0, 0)
             finish()
         }
-        val forgotpassword:Button = findViewById(R.id.forgot)
-        forgotpassword.setOnClickListener(){
+        val forgotpassword: Button = findViewById(R.id.forgot)
+        forgotpassword.setOnClickListener() {
             forgotpassword()
         }
-        val save: Button = findViewById(R.id.confirm_btn)
+        val save: Button = findViewById(R.id.sec_confirm_btn)
         save.setOnClickListener()
         {
 
-            val namefield: EditText = findViewById(R.id.profile_Name)
-            val surname: EditText = findViewById(R.id.profile_Surname)
-            val email: EditText = findViewById(R.id.profile_Email)
-            val phone: EditText = findViewById(R.id.phone_number)
-          val church:EditText = findViewById(R.id.church)
-            val churchid:EditText = findViewById(R.id.church_id)
-            val centersize:EditText = findViewById(R.id.center_size)
-            val country:EditText = findViewById(R.id.country)
+            val namefield: EditText = findViewById(R.id.profile_firstname)
+            val surname: EditText = findViewById(R.id.profile_surnameadd)
+            val email: EditText = findViewById(R.id.profile_email)
+            val phone: EditText = findViewById(R.id.profile_number)
+            val church: EditText = findViewById(R.id.profile_church)
+            val churchid: EditText = findViewById(R.id.profile_church_id)
+            val centersize: EditText = findViewById(R.id.center_size)
+            val country: EditText = findViewById(R.id.country)
 
             //action statements tp check fields if empty
             when {
@@ -71,6 +70,7 @@ class Profile:AppCompatActivity() {
                 surname.text.toString().isEmpty() -> {
                     Snackbar.make(email, e.noSName, Snackbar.LENGTH_SHORT).show()
                 }
+
                 email.text.toString().isEmpty() -> {
                     Snackbar.make(email, e.emailValidationEmptyError, Snackbar.LENGTH_SHORT).show()
                 }
@@ -80,21 +80,22 @@ class Profile:AppCompatActivity() {
                     Snackbar.make(email, e.nophonenumber, Snackbar.LENGTH_SHORT).show()
 
                 }
-                church.text.toString().isEmpty() ->
-                {
+
+                church.text.toString().isEmpty() -> {
 
                     Snackbar.make(email, e.emptychurch, Snackbar.LENGTH_SHORT).show()
                 }
-                centersize.text.isEmpty() ->
-                {
+
+                centersize.text.isEmpty() -> {
 
                     Snackbar.make(email, e.emptysize, Snackbar.LENGTH_SHORT).show()
                 }
-                country.text.isEmpty() ->
-                {
+
+                country.text.isEmpty() -> {
 
                     Snackbar.make(email, e.emptycountry, Snackbar.LENGTH_SHORT).show()
                 }
+
                 else -> { // move to the next screen if filled
 
 
@@ -104,6 +105,7 @@ class Profile:AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, loginBack)
     }
+
     private fun securGuard() {
 // this checks user tokens
         // if invalid forces the user to login again
@@ -122,8 +124,9 @@ class Profile:AppCompatActivity() {
             }
         }
     }
+
     fun forgotpassword() {
-        var email: EditText = findViewById(R.id.profile_Email)
+        var email: EditText = findViewById(R.id.profile_email)
         val auth = FirebaseAuth.getInstance()
         auth.sendPasswordResetEmail(email.text.toString())
             .addOnCompleteListener { task ->
@@ -136,15 +139,16 @@ class Profile:AppCompatActivity() {
             }
 
     }
+
     fun editdata() {
-        val namefield: EditText = findViewById(R.id.profile_Name)
-        val surname: EditText = findViewById(R.id.profile_Surname)
-        val email: EditText = findViewById(R.id.profile_Email)
-        val phone: EditText = findViewById(R.id.phone_number)
-        val church:EditText = findViewById(R.id.church)
-        val churchid:EditText = findViewById(R.id.church_id)
-        val centersize:EditText = findViewById(R.id.center_size)
-        val country:EditText = findViewById(R.id.country)
+        val namefield: EditText = findViewById(R.id.profile_firstname)
+        val surname: EditText = findViewById(R.id.profile_surnameadd)
+        val email: EditText = findViewById(R.id.profile_email)
+        val phone: EditText = findViewById(R.id.profile_number)
+        val church: EditText = findViewById(R.id.profile_church)
+        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val centersize: EditText = findViewById(R.id.center_size)
+        val country: EditText = findViewById(R.id.country)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -160,28 +164,29 @@ class Profile:AppCompatActivity() {
         val surnames = surname.text.toString().replace("\\s".toRegex(), "")
         val churchname = church.text.toString().replace("\\s".toRegex(), "")
         val centeramount = centersize.text.toString().replace("\\s".toRegex(), "")
-        val place= country.text.toString().replace("\\s".toRegex(), "")
+        val place = country.text.toString().replace("\\s".toRegex(), "")
         val emails = email.text.toString().replace("\\s".toRegex(), "")
-val id = churchid.text.toString().replace("\\s".toRegex(), "")
+        val id = churchid.text.toString().replace("\\s".toRegex(), "")
 
         val phones = phone.text.toString()
         val users = User(
-            name, surnames, emails, churchname,centeramount,place,id, userID, phones.toInt()
+            name, surnames, emails, churchname, centeramount, place, id, userID, phones
         )
         val docRef = db.collection("pastors").document(userID)
         docRef.set(
             mapOf("userDetails" to users), SetOptions.merge()
         )
     }
+
     fun dataload() {
-        val namefield: EditText = findViewById(R.id.profile_Name)
-        val surname: EditText = findViewById(R.id.profile_Surname)
-        val email: EditText = findViewById(R.id.profile_Email)
-        val phone: EditText = findViewById(R.id.phone_number)
-        val church:EditText = findViewById(R.id.church)
-        val churchid:EditText = findViewById(R.id.church_id)
-        val centersize:EditText = findViewById(R.id.center_size)
-        val country:EditText = findViewById(R.id.country)
+        val namefield: EditText = findViewById(R.id.profile_firstname)
+        val surname: EditText = findViewById(R.id.profile_surnameadd)
+        val email: EditText = findViewById(R.id.profile_email)
+        val phone: EditText = findViewById(R.id.profile_number)
+        val church: EditText = findViewById(R.id.profile_church)
+        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val centersize: EditText = findViewById(R.id.center_size)
+        val country: EditText = findViewById(R.id.country)
         val user = FirebaseAuth.getInstance().currentUser
 
         val userEmail = user?.email
@@ -200,11 +205,11 @@ val id = churchid.text.toString().replace("\\s".toRegex(), "")
                     val name = userDetails["firstname"].toString()
                     val surnames = userDetails["surname"].toString()
                     val emails = userDetails["email"].toString()
-                    val phonenumber = userDetails["phonenumber"].toString()
+                    val phonenumber = userDetails["phone"].toString()
                     val size = userDetails["centersize"].toString()
                     val id = userDetails["churchid"].toString()
                     val place = userDetails["country"].toString()
-                    val churchname = userDetails["worshipname"].toString()
+                    val churchname = userDetails["church"].toString()
                     phone.setText(phonenumber)
                     namefield.setText(name)
                     surname.setText(surnames)

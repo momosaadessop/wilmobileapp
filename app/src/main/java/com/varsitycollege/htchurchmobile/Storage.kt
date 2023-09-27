@@ -32,13 +32,13 @@ data class CategoryStorage
 data class User(
     val firstname: String,
     val surname: String,
-    val emailaddress: String,
+    val email: String,
     val church:String,
     val centersize:String,
     val country:String,
     val churchid:String,
     val userid: String,
-    val phone:Int
+    val phone:String
 
 )
 data class churchdetail(
