@@ -25,7 +25,7 @@ class Finances:AppCompatActivity() {
         var back = findViewById<ImageButton>(R.id.back_btn)
         back.setOnClickListener()
         {
-            val intent = Intent(this@Finances, Home::class.java)
+            val intent = Intent(this@Finances , Home::class.java)
 
             startActivity(intent)
             overridePendingTransition(0, 0)

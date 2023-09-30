@@ -13,6 +13,9 @@
         android:theme="@style/Theme.HTCHURCHMOBILE"
         tools:targetApi="31" >
         <activity
+            android:name=".EventListOnHold"
+            android:exported="false" />
+        <activity
             android:name=".secratary"
             android:exported="false" />
         <activity
