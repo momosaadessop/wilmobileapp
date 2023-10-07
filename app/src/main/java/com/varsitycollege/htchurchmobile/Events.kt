@@ -118,14 +118,14 @@ class Events:AppCompatActivity() {
     }
     fun addEvent() {
         val eventName: EditText = findViewById(R.id.event_name)
-        val eventTime: EditText = findViewById(R.id.event_time)
+
         val eventDate: EditText = findViewById(R.id.event_date)
         val churchSpinner: Spinner = findViewById(R.id.church_spinner)
         val eventDescription: EditText = findViewById(R.id.event_description)
         val eventAddress: EditText = findViewById(R.id.event_address)
         val calendarView: MaterialCalendarView = findViewById(R.id.calendarView)
         val name = eventName.text.toString()
-        val time = eventTime.text.toString()
+        val time = "add new implementation here"
         val date = eventDate.text.toString()
         val description = eventDescription.text.toString()
         val address = eventAddress.text.toString()
