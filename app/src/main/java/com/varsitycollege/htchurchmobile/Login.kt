@@ -1,6 +1,9 @@
 package com.varsitycollege.htchurchmobile
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -8,7 +11,10 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -56,10 +62,7 @@ class Login : AppCompatActivity() {
             docRef.get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-                        val text = "found you!!"
-                        val duration = Toast.LENGTH_SHORT
-                        val toast = Toast.makeText(this, text, duration)
-                        toast.show()
+
                         val auth = FirebaseAuth.getInstance()
                         auth.createUserWithEmailAndPassword(
                             emails.text.toString().lowercase(),
@@ -69,6 +72,11 @@ class Login : AppCompatActivity() {
                                 if (task.isSuccessful) {
 
                                     val user = auth.currentUser
+                                    val text = "you have claimed your credentials and have been logged in "
+                                    val duration = Toast.LENGTH_SHORT
+                                    val toast = Toast.makeText(this, text, duration)
+                                    toast.show()
+                                    autologin()
 
                                 } else {
 
@@ -80,6 +88,10 @@ class Login : AppCompatActivity() {
                                         pass?.text.toString().trim()
 
                                     )
+                                    val text = "User logged in "
+                                    val duration = Toast.LENGTH_SHORT
+                                    val toast = Toast.makeText(this, text, duration)
+                                    toast.show()
                                     val loginpage = Intent(this, Home::class.java)
                                     startActivity(loginpage)
                                     finish()
@@ -109,4 +121,62 @@ class Login : AppCompatActivity() {
             }
 
     }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun permissions() {
+        val code = 0
+
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_MEDIA_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_VIDEO
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.INTERNET
+            ) != PackageManager.PERMISSION_GRANTED -> {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_MEDIA_LOCATION,
+                        Manifest.permission.READ_MEDIA_IMAGES,
+                        Manifest.permission.READ_MEDIA_AUDIO,
+                        Manifest.permission.READ_MEDIA_VIDEO,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET
+                    ), code
+                )
+            }
+        }
+    }
+
 }

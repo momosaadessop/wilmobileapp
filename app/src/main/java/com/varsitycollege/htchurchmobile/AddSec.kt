@@ -24,6 +24,7 @@ class AddSec : AppCompatActivity() {
         setContentView(R.layout.add_secratary)
         supportActionBar?.hide()
         IDload()
+        securGuard()
         var save = findViewById<Button>(R.id.save_sec)
         save.setOnClickListener()
         {
@@ -51,7 +52,24 @@ class AddSec : AppCompatActivity() {
             finish()
         }
     }
+    private fun securGuard() {
+// this checks user tokens
+        // if invalid forces the user to login again
+        // if deleted forces the user out of the app
+        val tempusSecurity = FirebaseAuth.getInstance()
+        tempusSecurity.addAuthStateListener { firebaseAuth ->
+            when (firebaseAuth.currentUser) {
+                null -> {
+                    val intent = Intent(this, Login::class.java)
 
+                    startActivity(intent)
+                    overridePendingTransition(0, 0)
+                    finish()
+
+                }
+            }
+        }
+    }
     class DataClass {
         var data: String = ""
     }

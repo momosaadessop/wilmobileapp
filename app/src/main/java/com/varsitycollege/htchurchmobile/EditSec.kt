@@ -23,7 +23,8 @@ class EditSec : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sec_edit)
         supportActionBar?.hide()
-IDload()
+        IDload()
+        securGuard()
         val loginBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val intent = Intent(this@EditSec, secratary::class.java)
@@ -54,6 +55,25 @@ IDload()
 
     class DataClass {
         var data: String = ""
+    }
+
+    private fun securGuard() {
+// this checks user tokens
+        // if invalid forces the user to login again
+        // if deleted forces the user out of the app
+        val tempusSecurity = FirebaseAuth.getInstance()
+        tempusSecurity.addAuthStateListener { firebaseAuth ->
+            when (firebaseAuth.currentUser) {
+                null -> {
+                    val intent = Intent(this, Login::class.java)
+
+                    startActivity(intent)
+                    overridePendingTransition(0, 0)
+                    finish()
+
+                }
+            }
+        }
     }
 
     fun IDload() {
@@ -110,8 +130,6 @@ IDload()
             val secdb = FirebaseFirestore.getInstance()
 
 
-
-
             val parts = itemId!!.split('@', '.')
             val userID = parts[0] + parts[1]
 
@@ -125,11 +143,11 @@ IDload()
                             val secdetails = secmap[userID]
                             if (secdetails != null) {
                                 // Use the data from Firestore to populate the fields in your form
-                     firstname.setText(secdetails["firstname"])
+                                firstname.setText(secdetails["firstname"])
                                 surname.setText(secdetails["surname"])
                                 email.setText(secdetails["email"])
                                 church.setText(secdetails["churchname"])
-                               dates.setText(secdetails["datestart"])
+                                dates.setText(secdetails["datestart"])
                                 phone.setText(secdetails["phone"])
 
 
@@ -155,6 +173,7 @@ IDload()
 
 
     }
+
     private fun upload() {
 
 
@@ -195,12 +214,12 @@ IDload()
 
 
             }
+
             phone.text.toString().isEmpty() -> {
                 Snackbar.make(email, e.nophonenumber, Snackbar.LENGTH_SHORT).show()
 
 
             }
-
 
 
             else -> {
