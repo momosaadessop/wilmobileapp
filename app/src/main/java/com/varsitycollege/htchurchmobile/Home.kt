@@ -37,7 +37,7 @@ class Home:AppCompatActivity() {
         setContentView(R.layout.home)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         securGuard()
-        details()
+
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -194,7 +194,7 @@ class Home:AppCompatActivity() {
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-
+        details()
     }
     private fun securGuard() {
 // this checks user tokens
@@ -217,71 +217,76 @@ class Home:AppCompatActivity() {
     fun details() {
         val user = FirebaseAuth.getInstance().currentUser
         val userEmail = user?.email
-        val parts = userEmail!!.split('@', '.')
-        val userID = parts[0] + parts[1]
-        val storage = FirebaseStorage.getInstance()
-        val imageRef = storage.getReference().child(userID)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-        val email = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
-        val name = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
-        val image = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
-        email.text = userEmail
-        imageRef.downloadUrl.addOnSuccessListener { Uri ->
-            val url = Uri.toString()
+        if(userEmail != null) {
+            val parts = userEmail!!.split('@', '.')
+            val userID = parts[0] + parts[1]
 
-            val profileimage = RequestOptions().transform(CircleCrop())
-            Glide.with(this)
-                .load(url)
-                .apply(profileimage)
-                .into(image)
-        }
+            val storage = FirebaseStorage.getInstance()
+            val imageRef = storage.getReference().child(userID)
+            val navigationView: NavigationView = findViewById(R.id.nav_view)
+            val email =
+                navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_email)
+            val name = navigationView.getHeaderView(0).findViewById<TextView>(R.id.nav_header_name)
+            val image =
+                navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
+            email.text = userEmail
+            imageRef.downloadUrl.addOnSuccessListener { Uri ->
+                val url = Uri.toString()
 
-        image.setOnClickListener()
-        {
+                val profileimage = RequestOptions().transform(CircleCrop())
+                Glide.with(this)
+                    .load(url)
+                    .apply(profileimage)
+                    .into(image)
+            }
+
+            image.setOnClickListener()
+            {
 
 
-            val profileimage = AlertDialog.Builder(this)
-            profileimage.setTitle("Choose an option")
-            profileimage.setItems(
-                arrayOf(
-                    "Take a photo?",
-                    "Pick from gallery?",
+                val profileimage = AlertDialog.Builder(this)
+                profileimage.setTitle("Choose an option")
+                profileimage.setItems(
+                    arrayOf(
+                        "Take a photo?",
+                        "Pick from gallery?",
 
-                    )
-            ) { _, which ->
-                when (which) {
+                        )
+                ) { _, which ->
+                    when (which) {
 
-                    0 -> camera.launch(null)
-                    1 -> galleryContent.launch("imageURL/*")
+                        0 -> camera.launch(null)
+                        1 -> galleryContent.launch("imageURL/*")
 
+                    }
                 }
+                val actionshow = profileimage.create()
+                actionshow.show()
+
             }
-            val actionshow = profileimage.create()
-            actionshow.show()
-
-        }
 
 
 
-        Log.d("userid", userID)
-        val userfiles = FirebaseFirestore.getInstance()
-        val data = userfiles.collection("pastors").document(userID)
-        data.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
-                    val profiledata = document.get("userDetails") as Map<String, Any>
-                    val names = profiledata["firstname"].toString()
-                    val surnames = profiledata["surname"].toString()
-                    name.text = names + "" + surnames
+            Log.d("userid", userID)
+            val userfiles = FirebaseFirestore.getInstance()
+            val data = userfiles.collection("pastors").document(userID)
+            data.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
+                        val profiledata = document.get("userDetails") as Map<String, Any>
+                        val names = profiledata["firstname"].toString()
+                        val surnames = profiledata["surname"].toString()
+                        name.text = names + "" + surnames
 
-                } else {
-                    Log.d(ContentValues.TAG, "No such document")
+                    } else {
+                        Log.d(ContentValues.TAG, "No such document")
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(ContentValues.TAG, "get failed with ", exception)
-            }
+                .addOnFailureListener { exception ->
+                    Log.d(ContentValues.TAG, "get failed with ", exception)
+                }
+        }
 
     }
     private val galleryContent =

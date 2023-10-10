@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +25,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton
 import de.keyboardsurfer.android.widget.crouton.Style
 
 class Login : AppCompatActivity() {
+    private val e = Errors()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
@@ -88,13 +91,31 @@ class Login : AppCompatActivity() {
                                         pass?.text.toString().trim()
 
                                     )
-                                    val text = "User logged in "
-                                    val duration = Toast.LENGTH_SHORT
-                                    val toast = Toast.makeText(this, text, duration)
-                                    toast.show()
-                                    val loginpage = Intent(this, Home::class.java)
-                                    startActivity(loginpage)
-                                    finish()
+                                        .addOnCompleteListener(this) { task ->
+                                            when {
+                                                task.isSuccessful -> {
+
+                                                    val text = "you  have been logged in "
+                                                    val duration = Toast.LENGTH_SHORT
+                                                    val toast = Toast.makeText(this, text, duration)
+                                                    toast.show()
+                                                    Handler(Looper.getMainLooper()).postDelayed({
+                                                        val intent = Intent(this, Home::class.java)
+                                                        startActivity(intent)
+                                                        overridePendingTransition(0, 0)
+                                                        finish()
+                                                    }, (duration * 1000).toLong())
+
+                                                }
+
+                                                else -> {
+                                                    val crouton = Crouton.makeText(this, e.loginError, Style.ALERT)
+                                                    crouton.show()
+                                                }
+                                            }
+                                        }
+
+
                                 }
                             }
 
