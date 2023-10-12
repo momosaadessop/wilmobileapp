@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -77,7 +78,7 @@ class ChurchDetails:AppCompatActivity() {
     }
     fun IDload() {
 
-        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val churchid: TextView = findViewById(R.id.church_id)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -114,7 +115,7 @@ class ChurchDetails:AppCompatActivity() {
     }
     fun Dataload(data:DataClass) {
 
-        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val churchid: TextView = findViewById(R.id.church_id)
         val churchname: EditText = findViewById(R.id.church_Name)
 
         val place: EditText = findViewById(R.id.location)
