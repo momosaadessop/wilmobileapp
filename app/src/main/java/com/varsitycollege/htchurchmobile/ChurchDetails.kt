@@ -17,7 +17,7 @@ import com.google.firebase.firestore.SetOptions
 import de.keyboardsurfer.android.widget.crouton.Crouton
 import de.keyboardsurfer.android.widget.crouton.Style
 
-class ChurchDetails:AppCompatActivity() {
+class ChurchDetails : AppCompatActivity() {
     private val e = Errors()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +73,11 @@ class ChurchDetails:AppCompatActivity() {
             }
         }
     }
+
     class DataClass {
         var data: String = ""
     }
+
     fun IDload() {
 
         val churchid: TextView = findViewById(R.id.church_id)
@@ -113,16 +115,17 @@ class ChurchDetails:AppCompatActivity() {
 
 
     }
-    fun Dataload(data:DataClass) {
 
-        val churchid: TextView = findViewById(R.id.church_id)
+    fun Dataload(data: DataClass) {
+
+
         val churchname: EditText = findViewById(R.id.church_Name)
 
         val place: EditText = findViewById(R.id.location)
 
-        val memberno:EditText = findViewById(R.id.member_number)
+        val memberno: EditText = findViewById(R.id.member_number)
 
-        val pastorno:EditText = findViewById(R.id.pastor_number)
+        val pastorno: EditText = findViewById(R.id.pastor_number)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -138,16 +141,23 @@ class ChurchDetails:AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d(ContentValues.TAG, "DocumentSnapshot data: ${document.data}")
-                    val userDetails = document.get("churchDetails") as Map<String, Any>
+                    try {
 
-                    val mno = userDetails["members"].toString()
-                    val pno = userDetails["pastors"].toString()
-                    val name = userDetails["churchname"].toString()
-                    val location = userDetails["location"].toString()
-memberno.setText(mno)
-                    pastorno.setText(pno)
-                    churchname.setText(name)
-place.setText(location)
+
+                        val userDetails = document.get("churchDetails") as Map<String, Any>
+
+                        val mno = userDetails["members"].toString()
+                        val pno = userDetails["pastors"].toString()
+                        val name = userDetails["churchname"].toString()
+                        val location = userDetails["location"].toString()
+                        memberno.setText(mno)
+                        pastorno.setText(pno)
+                        churchname.setText(name)
+                        place.setText(location)
+                    } catch(e:Exception)
+                    {
+
+                    }
                 } else {
                     Log.d(ContentValues.TAG, "No such document")
                 }
@@ -158,13 +168,14 @@ place.setText(location)
 
 
     }
+
     fun editdata() {
         val namefield: EditText = findViewById(R.id.church_Name)
         val place: EditText = findViewById(R.id.location)
 
-        val memberno:EditText = findViewById(R.id.member_number)
-        val churchid:EditText = findViewById(R.id.profile_church_id)
-        val pastorno:EditText = findViewById(R.id.pastor_number)
+        val memberno: EditText = findViewById(R.id.member_number)
+        val churchid: TextView = findViewById(R.id.church_id)
+        val pastorno: EditText = findViewById(R.id.pastor_number)
 
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -187,13 +198,14 @@ place.setText(location)
 
 
         val users = churchdetail(
-            id, name, members, pastors,location
+            id, name, members, pastors, location
         )
         val docRef = db.collection("churchs").document(id)
         docRef.set(
             mapOf("churchDetails" to users), SetOptions.merge()
         ).addOnSuccessListener {
-            Crouton.makeText(this@ChurchDetails, "Church details saved successfully", Style.CONFIRM).show()
+            Crouton.makeText(this@ChurchDetails, "Church details saved successfully", Style.CONFIRM)
+                .show()
         }.addOnFailureListener { e ->
             Log.w(TAG, "Error writing document", e)
         }

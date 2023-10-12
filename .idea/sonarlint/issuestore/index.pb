@@ -43,3 +43,5 @@ r
 Bapp/src/main/java/com/varsitycollege/htchurchmobile/ViewPastors.kt,1\8\18cf90107aaefdca499c36c2e5723cc34236b179
 v
 Fapp/src/main/java/com/varsitycollege/htchurchmobile/EventListOnHold.kt,a\5\a582589799d20f987f9163efcb51412417c3381f
+s
+Capp/src/main/java/com/varsitycollege/htchurchmobile/EventAdapter.kt,a\b\ab767e242bea368ce8913b10e2c6797c04517731

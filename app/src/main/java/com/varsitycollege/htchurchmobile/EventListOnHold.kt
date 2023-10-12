@@ -1,9 +1,14 @@
 package com.varsitycollege.htchurchmobile
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -11,38 +16,68 @@ class EventListOnHold : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.event_list_on_hold)
-        // Get the date from the intent
         val date = intent.getStringExtra("date")
         Log.d(TAG, "Transfer Value: $date") // This will log the selected date
+        val dateTextView: TextView = findViewById(R.id.dateTextView) // Replace 'dateTextView' with the actual ID of your TextView
+        dateTextView.text = date
         val db = FirebaseFirestore.getInstance()
         // Query the events collection for all events on the selected date
+        val eventList = ArrayList<Event>()
+        val adapter = EventAdapter(eventList)
+        val recyclerView: RecyclerView = findViewById(R.id.event_recycler)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
         db.collection("events")
             .whereEqualTo("date", date)
             .get()
             .addOnSuccessListener { documents ->
-                val eventList = ArrayList<String>()
                 for (document in documents) {
-                    val name = document.getString("name")
-                    val description = document.getString("description")
-                    val church = document.getString("church")
-                    val address = document.getString("address")
-                    val date = document.getString("date")
-                    val time = document.getString("time")
+                    val name = document.getString("name") ?: ""
+                    val description = document.getString("description") ?: ""
+                    val church = document.getString("church") ?: ""
+                    val location = document.getString("address") ?: ""
+                    val eventdate = document.getString("date") ?: ""
+                    val startTime = document.getString("start_time") ?: ""
+                    val endTime = document.getString("end_time") ?: ""
                     Log.d(TAG, "Event Name: $name")
                     Log.d(TAG, "Event Name: $church")
-                    Log.d(TAG, "Event Name: $address")
-                    Log.d(TAG, "Event Name: $date")
-                    Log.d(TAG, "Event Name: $time")
+                    Log.d(TAG, "Event Name: $location")
+                    Log.d(TAG, "Event Name: $eventdate")
+                    Log.d(TAG, "Start Time: $startTime")
+                    Log.d(TAG, "End Time: $endTime")
                     Log.d(TAG, "Event Name: $description")
-                    // This will log the event name
+                    val event = Event(name, description, church, location, eventdate, startTime, endTime)  // Assuming Event is a data class with these fields
+                    eventList.add(event)
                 }
-
+                adapter.notifyDataSetChanged()  // Refresh the RecyclerView
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
             }
+        var back = findViewById<ImageButton>(R.id.event_list_back_btn)
+        back.setOnClickListener()
+        {
+            val intent = Intent(this@EventListOnHold, Events::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 }
 
 
 
+
+
+
+
+data class Event(
+    val name: String?,
+    val description: String?,
+    val church: String?,
+    val location: String?,
+    val date: String?,
+    val startTime: String?,
+    val endTime: String?
+)

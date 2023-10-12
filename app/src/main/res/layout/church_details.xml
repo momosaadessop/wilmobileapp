@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
-                android:text="Name"
+                android:hint="Church Name"
                 android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="10dp"/>
@@ -63,7 +63,7 @@
                 android:layout_height="50dp"
                 android:textAlignment="center"
                 android:background="#F7B96C"
-                android:text="id"
+                android:hint="id"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp"/>
 
@@ -72,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:text="Number of Members:"
                 android:textStyle="bold"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                />
 
             <EditText
                 android:id="@+id/member_number"
@@ -80,9 +81,10 @@
                 android:layout_height="50dp"
                 android:background="#F7B96C"
                 android:textAlignment="center"
-                android:text="members"
+                android:hint="members"
                 android:textSize="23sp"
-                android:layout_marginTop="30dp"/>
+                android:layout_marginTop="30dp"
+                android:inputType="number"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -97,9 +99,10 @@
                 android:layout_height="50dp"
                 android:background="#F7B96C"
                 android:textAlignment="center"
-                android:text="pastors"
+                android:hint="pastors"
                 android:textSize="23sp"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="30dp"
+                android:inputType="numberDecimal"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -113,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#F7B96C"
-                android:text="location"
+                android:hint="location"
                 android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
