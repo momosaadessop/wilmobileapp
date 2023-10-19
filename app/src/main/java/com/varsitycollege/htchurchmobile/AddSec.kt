@@ -52,6 +52,7 @@ class AddSec : AppCompatActivity() {
             finish()
         }
     }
+
     private fun securGuard() {
 // this checks user tokens
         // if invalid forces the user to login again
@@ -70,6 +71,7 @@ class AddSec : AppCompatActivity() {
             }
         }
     }
+
     class DataClass {
         var data: String = ""
     }
@@ -189,13 +191,12 @@ class AddSec : AppCompatActivity() {
 
 
             }
+
             phone.text.toString().isEmpty() -> {
                 Snackbar.make(email, e.nophonenumber, Snackbar.LENGTH_SHORT).show()
 
 
             }
-
-
 
 
             else -> {
@@ -227,10 +228,17 @@ class AddSec : AppCompatActivity() {
                 db.collection("churchs").document(data.data.lowercase())
                     .set(hashMapOf("secretary" to secs), SetOptions.merge())
                     .addOnSuccessListener {
+
+                        val intent = Intent(this@AddSec, secratary::class.java)
+
+                        startActivity(intent)
+                        overridePendingTransition(0, 0)
+                        finish()
                         Snackbar.make(
                             surname,
                             "Added ${firstname.text.toString()}",
                             Snackbar.LENGTH_SHORT
+
                         ).show()
                     }
                     .addOnFailureListener { exception ->

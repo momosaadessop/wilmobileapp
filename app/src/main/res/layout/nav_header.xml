@@ -4,7 +4,7 @@
     android:layout_height="350dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#FDB375">
+    android:background="@drawable/gradient_background">
 
     <ImageView
         android:id="@+id/nav_header_image"

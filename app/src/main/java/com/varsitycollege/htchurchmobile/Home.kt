@@ -358,7 +358,7 @@ class Home:AppCompatActivity() {
     }
     fun IDload() {
 
-        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val churchid: EditText = findViewById(R.id.church_id)
 
         val user = FirebaseAuth.getInstance().currentUser
 

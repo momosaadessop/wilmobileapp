@@ -6,19 +6,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7B96C"
+    android:background="@drawable/gradient_background"
     android:padding="15dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:background="@drawable/arrow_back"
-        android:layout_gravity="left"/>
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:background="@drawable/arrow_back"
+            android:layout_gravity="left"/>
 
         <TextView
             android:id="@+id/events_title"
@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
-                android:backgroundTint="#BA8749"
+                android:backgroundTint="#60AE8C"
                 android:text="Add Event"
                 android:textSize="16sp"/>
 
@@ -165,7 +165,7 @@
                 android:id="@+id/finish_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:backgroundTint="#BA8749"
+                android:backgroundTint="#60AE8C"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
                 android:text="Add"

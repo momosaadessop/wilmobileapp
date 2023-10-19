@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F57F17">
+        android:background="@drawable/gradient_background">
 
 
         <com.github.clans.fab.FloatingActionMenu

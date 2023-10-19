@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -204,8 +205,13 @@ class ChurchDetails : AppCompatActivity() {
         docRef.set(
             mapOf("churchDetails" to users), SetOptions.merge()
         ).addOnSuccessListener {
-            Crouton.makeText(this@ChurchDetails, "Church details saved successfully", Style.CONFIRM)
-                .show()
+
+            Snackbar.make(
+                namefield,
+                "Updated Church Details for $name",
+                Snackbar.LENGTH_SHORT
+
+            ).show()
         }.addOnFailureListener { e ->
             Log.w(TAG, "Error writing document", e)
         }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F7B96C"
+    android:background="@drawable/gradient_background"
     android:orientation="vertical">
 
     <ImageButton
@@ -24,7 +24,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,9 +45,7 @@
                 android:id="@+id/sec_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
                 android:hint="Name"
-                android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="10dp"/>
 
@@ -61,8 +60,6 @@
                 android:id="@+id/sec_surname"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:textAlignment="center"
-                android:background="#F7B96C"
                 android:hint="surname"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp"/>
@@ -78,8 +75,6 @@
                 android:id="@+id/sec_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
-                android:textAlignment="center"
                 android:hint="email"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp"/>
@@ -95,8 +90,6 @@
                 android:id="@+id/sec_church_id"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
-                android:textAlignment="center"
                 android:hint="church id"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
@@ -112,8 +105,6 @@
                 android:id="@+id/sec_church_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
-                android:textAlignment="center"
                 android:hint="church name"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
@@ -129,9 +120,7 @@
                 android:id="@+id/sec_date"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
                 android:hint="date"
-                android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
 
@@ -146,10 +135,8 @@
                 android:id="@+id/sec_number"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="#F7B96C"
                 android:hint="number"
                 android:inputType="phone"
-                android:textAlignment="center"
                 android:textSize="23sp"
                 android:layout_marginTop="30dp" />
 
@@ -159,11 +146,11 @@
                 android:layout_height="wrap_content"
                 android:text="Confirm"
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="#FDA941"/>
+                android:backgroundTint="#60AE8C"/>
 
         </LinearLayout>
 

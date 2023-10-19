@@ -57,7 +57,7 @@ class Profile : AppCompatActivity() {
             val email: EditText = findViewById(R.id.profile_email)
             val phone: EditText = findViewById(R.id.profile_number)
             val church: EditText = findViewById(R.id.profile_church)
-            val churchid: EditText = findViewById(R.id.profile_church_id)
+            val churchid: EditText = findViewById(R.id.church_id)
             val centersize: EditText = findViewById(R.id.center_size)
             val country: EditText = findViewById(R.id.country)
 
@@ -146,7 +146,7 @@ class Profile : AppCompatActivity() {
         val email: EditText = findViewById(R.id.profile_email)
         val phone: EditText = findViewById(R.id.profile_number)
         val church: EditText = findViewById(R.id.profile_church)
-        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val churchid: EditText = findViewById(R.id.church_id)
         val centersize: EditText = findViewById(R.id.center_size)
         val country: EditText = findViewById(R.id.country)
 
@@ -175,7 +175,15 @@ class Profile : AppCompatActivity() {
         val docRef = db.collection("pastors").document(userID)
         docRef.set(
             mapOf("userDetails" to users), SetOptions.merge()
-        )
+        ).addOnSuccessListener {
+
+            Snackbar.make(
+                surname,
+                "Updated Profile for $name",
+                Snackbar.LENGTH_SHORT
+
+            ).show()
+        }
     }
 
     fun dataload() {
@@ -184,7 +192,7 @@ class Profile : AppCompatActivity() {
         val email: EditText = findViewById(R.id.profile_email)
         val phone: EditText = findViewById(R.id.profile_number)
         val church: EditText = findViewById(R.id.profile_church)
-        val churchid: EditText = findViewById(R.id.profile_church_id)
+        val churchid: EditText = findViewById(R.id.church_id)
         val centersize: EditText = findViewById(R.id.center_size)
         val country: EditText = findViewById(R.id.country)
         val user = FirebaseAuth.getInstance().currentUser

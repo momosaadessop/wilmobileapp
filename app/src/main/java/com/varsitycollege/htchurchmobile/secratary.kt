@@ -146,7 +146,7 @@ data class Sec(
     val date: String
 )
 
-class SecAdapter(private val birds: List<Sec>) : RecyclerView.Adapter<SecAdapter.BirdViewHolder>() {
+class SecAdapter(private val churchsecratary: List<Sec>) : RecyclerView.Adapter<SecAdapter.BirdViewHolder>() {
 
     inner class BirdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val firstNames: TextView = view.findViewById(R.id.sec_name)
@@ -163,19 +163,19 @@ class SecAdapter(private val birds: List<Sec>) : RecyclerView.Adapter<SecAdapter
     }
 
     override fun onBindViewHolder(holder: BirdViewHolder, position: Int) {
-        val bird = birds[position]
-        holder.firstNames.text = bird.firstname
-        holder.surnames.text = bird.surname
-        holder.emails.text = bird.email
-        holder.worhshipname.text = bird.worshipname
-        holder.ids.text = bird.id
-        holder.dates.text = bird.date
+        val secdata = churchsecratary[position]
+        holder.firstNames.text = secdata.firstname
+        holder.surnames.text = secdata.surname
+        holder.emails.text = secdata.email
+        holder.worhshipname.text = secdata.worshipname
+        holder.ids.text = secdata.id
+        holder.dates.text = secdata.date
 
 
 
 
         holder.itemView.setOnClickListener {
-            val clickedData = birds[position]
+            val clickedData = churchsecratary[position]
             val context = holder.itemView.context
             val intent = Intent(context, EditSec::class.java)
             intent.putExtra("birdid", clickedData.email)
@@ -187,5 +187,5 @@ class SecAdapter(private val birds: List<Sec>) : RecyclerView.Adapter<SecAdapter
         }
     }
 
-    override fun getItemCount() = birds.size
+    override fun getItemCount() = churchsecratary.size
 }
