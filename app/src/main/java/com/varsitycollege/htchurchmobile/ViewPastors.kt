@@ -80,9 +80,9 @@ data class Pastordata(
     val churchid: String,
 
     )
-class pastoradaptor(private val birds: List<Pastordata>) : RecyclerView.Adapter<pastoradaptor.BirdViewHolder>() {
+class pastoradaptor(private val pdata: List<Pastordata>) : RecyclerView.Adapter<pastoradaptor.PastorHolder>() {
 
-    inner class BirdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class PastorHolder(view: View) : RecyclerView.ViewHolder(view) {
         val firstName: TextView = view.findViewById(R.id.pastor_name)
         val SurName: TextView = view.findViewById(R.id.pastor_surname)
         val email: TextView = view.findViewById(R.id.pastor_email)
@@ -90,18 +90,18 @@ class pastoradaptor(private val birds: List<Pastordata>) : RecyclerView.Adapter<
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BirdViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.pastor_cv, parent, false)
-        return BirdViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PastorHolder {
+        val PastorLayout = LayoutInflater.from(parent.context).inflate(R.layout.pastor_cv, parent, false)
+        return PastorHolder(PastorLayout)
     }
 
-    override fun onBindViewHolder(holder: BirdViewHolder, position: Int) {
-        val bird = birds[position]
+    override fun onBindViewHolder(pdisplay: PastorHolder, position: Int) {
+        val psdata = pdata[position]
 
-        holder.firstName.text = bird.firstname
-        holder.SurName.text = bird.surname
-        holder.email.text = bird.email
-        holder.churchid.text = bird.churchid
+        pdisplay.firstName.text = psdata.firstname
+        pdisplay.SurName.text = psdata.surname
+        pdisplay.email.text = psdata.email
+        pdisplay.churchid.text = psdata.churchid
 
 
 
@@ -110,5 +110,5 @@ class pastoradaptor(private val birds: List<Pastordata>) : RecyclerView.Adapter<
 
     }
 
-    override fun getItemCount() = birds.size
+    override fun getItemCount() = pdata.size
 }

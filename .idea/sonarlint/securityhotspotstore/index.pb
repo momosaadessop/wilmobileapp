@@ -45,3 +45,7 @@ v
 Fapp/src/main/java/com/varsitycollege/htchurchmobile/EventListOnHold.kt,a\5\a582589799d20f987f9163efcb51412417c3381f
 s
 Capp/src/main/java/com/varsitycollege/htchurchmobile/EventAdapter.kt,a\b\ab767e242bea368ce8913b10e2c6797c04517731
+p
+@app/src/main/java/com/varsitycollege/htchurchmobile/EditEvent.kt,1\4\14fc73aac8cc409efe0b0fb3071f0c141d8d66e9
+y
+Iapp/src/main/java/com/varsitycollege/htchurchmobile/FinanceDataAdapter.kt,1\4\14bce791f500abb8426ad9777a4a10a1882d3531

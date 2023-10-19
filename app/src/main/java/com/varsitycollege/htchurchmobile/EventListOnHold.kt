@@ -15,10 +15,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 class EventListOnHold : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.event_list_on_hold)
         val date = intent.getStringExtra("date")
-        Log.d(TAG, "Transfer Value: $date") // This will log the selected date
-        val dateTextView: TextView = findViewById(R.id.dateTextView) // Replace 'dateTextView' with the actual ID of your TextView
+        Log.d(TAG, "Transfer Value: $date")
+        val dateTextView: TextView = findViewById(R.id.dateTextView)
         dateTextView.text = date
         val db = FirebaseFirestore.getInstance()
         // Query the events collection for all events on the selected date
@@ -27,6 +28,7 @@ class EventListOnHold : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.event_recycler)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        registerForContextMenu(recyclerView)
         db.collection("events")
             .whereEqualTo("date", date)
             .get()
@@ -46,10 +48,10 @@ class EventListOnHold : AppCompatActivity() {
                     Log.d(TAG, "Start Time: $startTime")
                     Log.d(TAG, "End Time: $endTime")
                     Log.d(TAG, "Event Name: $description")
-                    val event = Event(name, description, church, location, eventdate, startTime, endTime)  // Assuming Event is a data class with these fields
+                    val event = Event(name, description, church, location, eventdate, startTime, endTime)
                     eventList.add(event)
                 }
-                adapter.notifyDataSetChanged()  // Refresh the RecyclerView
+                adapter.notifyDataSetChanged()  // Refresh RecyclerView
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -67,11 +69,7 @@ class EventListOnHold : AppCompatActivity() {
 }
 
 
-
-
-
-
-
+//Data class for the event
 data class Event(
     val name: String?,
     val description: String?,

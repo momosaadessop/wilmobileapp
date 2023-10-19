@@ -146,9 +146,9 @@ data class Sec(
     val date: String
 )
 
-class SecAdapter(private val churchsecratary: List<Sec>) : RecyclerView.Adapter<SecAdapter.BirdViewHolder>() {
+class SecAdapter(private val churchsecratary: List<Sec>) : RecyclerView.Adapter<SecAdapter.SecHolder>() {
 
-    inner class BirdViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class SecHolder(view: View) : RecyclerView.ViewHolder(view) {
         val firstNames: TextView = view.findViewById(R.id.sec_name)
         val surnames: TextView = view.findViewById(R.id.sec_surname)
         val emails: TextView = view.findViewById(R.id.sec_email)
@@ -157,26 +157,26 @@ class SecAdapter(private val churchsecratary: List<Sec>) : RecyclerView.Adapter<
         val dates: TextView = view.findViewById(R.id.sec_date)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BirdViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.sec_cv, parent, false)
-        return BirdViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecHolder {
+        val secLayout = LayoutInflater.from(parent.context).inflate(R.layout.sec_cv, parent, false)
+        return SecHolder(secLayout)
     }
 
-    override fun onBindViewHolder(holder: BirdViewHolder, position: Int) {
+    override fun onBindViewHolder(secdatas: SecHolder, position: Int) {
         val secdata = churchsecratary[position]
-        holder.firstNames.text = secdata.firstname
-        holder.surnames.text = secdata.surname
-        holder.emails.text = secdata.email
-        holder.worhshipname.text = secdata.worshipname
-        holder.ids.text = secdata.id
-        holder.dates.text = secdata.date
+        secdatas.firstNames.text = secdata.firstname
+        secdatas.surnames.text = secdata.surname
+        secdatas.emails.text = secdata.email
+        secdatas.worhshipname.text = secdata.worshipname
+        secdatas.ids.text = secdata.id
+        secdatas.dates.text = secdata.date
 
 
 
 
-        holder.itemView.setOnClickListener {
+        secdatas.itemView.setOnClickListener {
             val clickedData = churchsecratary[position]
-            val context = holder.itemView.context
+            val context = secdatas.itemView.context
             val intent = Intent(context, EditSec::class.java)
             intent.putExtra("birdid", clickedData.email)
 

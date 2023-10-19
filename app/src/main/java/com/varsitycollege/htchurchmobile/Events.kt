@@ -138,7 +138,6 @@ class Events:AppCompatActivity() {
         // Get the start and end times
         val startTime = String.format("%02d:%02d", startTimePicker.hour, startTimePicker.minute)
         val endTime = String.format("%02d:%02d", endTimePicker.hour, endTimePicker.minute)
-
         Log.d("Time", "Start Time: $startTime")
         Log.d("Time", "End Time: $endTime")
         // Get the selected church from the spinner
@@ -168,7 +167,7 @@ class Events:AppCompatActivity() {
         )
         val db = FirebaseFirestore.getInstance()
         db.collection("events")
-            .document(name) //event name as the document name
+            .document(name) //event name
             .set(event)
             .addOnSuccessListener {
                 Log.d("DB upload", "DocumentSnapshot added with ID: $name")
@@ -185,8 +184,10 @@ class Events:AppCompatActivity() {
                 val localDate = zonedDateTime.toLocalDate()
                 // Create CalendarDay object and add it to the list
                 val day = CalendarDay.from(localDate)
-                // Add the new event to the calendar
-                calendarView.addDecorator(EventDecorator(Color.RED, name, listOf(day)))
+                // Add event to calendar
+                calendarView.addDecorator(EventDecorator(Color.WHITE, name, listOf(day)))
+                Toast.makeText(this, "Event $name has been added successfully.", Toast.LENGTH_SHORT).show()
+
             }
             .addOnFailureListener { e ->
                 Log.w("DB upload", "Error adding document", e)
@@ -205,13 +206,12 @@ class Events:AppCompatActivity() {
                         churches.add(churchCenter)
                     }
                 }
-                Log.d(TAG, "Churches: $churches")  // Log the churches list
-
-                // Create an ArrayAdapter using the string array and a default spinner layout
+                Log.d(TAG, "Churches: $churches")
+                // Create an ArrayAdapter using string array
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, churches)
-                // Specify the layout to use when the list of choices appears
+                // Specify the layout to use
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
+                // Apply the adapter
                 churchSpinner.adapter = adapter
             }
             .addOnFailureListener { exception ->
@@ -225,7 +225,7 @@ class EventDecorator(private val color: Int, private val text: String, dates: Co
         return dates.contains(day)
     }
     override fun decorate(view: DayViewFacade) {
-        view.addSpan(BottomTextSpan(text, color))  // You can set the text and color
+        view.addSpan(BottomTextSpan(text, color))
     }
 }
 class BottomTextSpan(private val text: String, private val color: Int) : LineBackgroundSpan {
@@ -238,9 +238,9 @@ class BottomTextSpan(private val text: String, private val color: Int) : LineBac
         val oldColor = p.color
         val oldTextSize = p.textSize
         p.color = color
-        p.textSize = 30f  // Set the text size to 20. Adjust this value as needed.
+        p.textSize = 30f
         c.drawText(this.text, ((right - left) / 2f) - 60, bottom + p.textSize, p)
         p.color = oldColor
-        p.textSize = oldTextSize  // Restore the original text size
+        p.textSize = oldTextSize
     }
 }
