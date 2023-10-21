@@ -355,16 +355,16 @@ class Finances : AppCompatActivity() {
                                     }
 
                                     // Update the Firestore document with the modified list
-                                    val updatedData =
-                                        mapOf("finance" to mapOf("entries" to updatedEntries))
+                                    val updatedData = mapOf("finance.entries" to updatedEntries)
                                     db.document(documentPath)
-                                        .set(updatedData)
+                                        .update(updatedData)
                                         .addOnSuccessListener {
                                             Log.d(TAG, "Entry deleted from Firestore")
                                         }
                                         .addOnFailureListener { e ->
                                             Log.e(TAG, "Error deleting entry from Firestore: $e")
                                         }
+
                                 }
                             }
                         }
