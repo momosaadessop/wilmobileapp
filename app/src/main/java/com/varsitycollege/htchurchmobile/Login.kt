@@ -120,7 +120,8 @@ class Login : AppCompatActivity() {
                             }
 
                     } else {
-                        // The document was not found
+                        val crouton = Crouton.makeText(this,"Profile is not confirmed,please save your details under the profile page of the website", Style.ALERT)
+                        crouton.show()
                     }
                 }
 
