@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
@@ -54,10 +55,10 @@ class Profile : AppCompatActivity() {
 
             val namefield: EditText = findViewById(R.id.profile_firstname)
             val surname: EditText = findViewById(R.id.profile_surnameadd)
-            val email: EditText = findViewById(R.id.profile_email)
+            val email: TextView = findViewById(R.id.profile_email)
             val phone: EditText = findViewById(R.id.profile_number)
             val church: EditText = findViewById(R.id.profile_church)
-            val churchid: EditText = findViewById(R.id.church_id)
+            val churchid: TextView = findViewById(R.id.church_id)
             val centersize: EditText = findViewById(R.id.center_size)
             val country: EditText = findViewById(R.id.country)
 
@@ -126,7 +127,7 @@ class Profile : AppCompatActivity() {
     }
 
     fun forgotpassword() {
-        var email: EditText = findViewById(R.id.profile_email)
+        var email: TextView = findViewById(R.id.profile_email)
         val auth = FirebaseAuth.getInstance()
         auth.sendPasswordResetEmail(email.text.toString())
             .addOnCompleteListener { task ->
@@ -143,10 +144,10 @@ class Profile : AppCompatActivity() {
     fun editdata() {
         val namefield: EditText = findViewById(R.id.profile_firstname)
         val surname: EditText = findViewById(R.id.profile_surnameadd)
-        val email: EditText = findViewById(R.id.profile_email)
+        val email: TextView = findViewById(R.id.profile_email)
         val phone: EditText = findViewById(R.id.profile_number)
         val church: EditText = findViewById(R.id.profile_church)
-        val churchid: EditText = findViewById(R.id.church_id)
+        val churchid: TextView = findViewById(R.id.church_id)
         val centersize: EditText = findViewById(R.id.center_size)
         val country: EditText = findViewById(R.id.country)
 
@@ -189,10 +190,10 @@ class Profile : AppCompatActivity() {
     fun dataload() {
         val namefield: EditText = findViewById(R.id.profile_firstname)
         val surname: EditText = findViewById(R.id.profile_surnameadd)
-        val email: EditText = findViewById(R.id.profile_email)
+        val email: TextView = findViewById(R.id.profile_email)
         val phone: EditText = findViewById(R.id.profile_number)
         val church: EditText = findViewById(R.id.profile_church)
-        val churchid: EditText = findViewById(R.id.church_id)
+        val churchid: TextView = findViewById(R.id.church_id)
         val centersize: EditText = findViewById(R.id.center_size)
         val country: EditText = findViewById(R.id.country)
         val user = FirebaseAuth.getInstance().currentUser
