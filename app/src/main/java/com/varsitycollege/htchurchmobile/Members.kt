@@ -44,7 +44,7 @@ class Members: AppCompatActivity(){
     }
     fun print()
     {
-        val recyclerView = findViewById<RecyclerView>(R.id.member_recyclerView)
+        val recyclerView = findViewById<RecyclerView>(R.id.display_member)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val db = FirebaseFirestore.getInstance()
 

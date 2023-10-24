@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:padding="15dp">
+   >
+
 
     <TextView
         android:id="@+id/member_title"
@@ -25,19 +25,23 @@
         android:background="@drawable/arrow_back"
         android:layout_alignParentTop="true" />
 
-    <ImageButton
-        android:id="@+id/delete_btn"
-        android:layout_width="40dp"
-        android:layout_height="100dp"
-        android:layout_above="@id/member_recyclerView"
-        android:background="@drawable/ic_delete"
-        android:layout_alignParentEnd="true"/>
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.cardview.widget.CardView
         android:id="@+id/member_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@id/member_title"
-        android:layout_marginTop="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/display_member"
+            android:background="@drawable/cardview_top_radius"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/member_title"
+            android:paddingTop="25dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

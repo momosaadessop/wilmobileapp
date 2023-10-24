@@ -44,7 +44,7 @@ class ViewPastors:AppCompatActivity() {
     }
     fun print()
     {
-        val pastordisplay = findViewById<RecyclerView>(R.id.pastor_recyclerView)
+        val pastordisplay = findViewById<RecyclerView>(R.id.pastor_display)
         pastordisplay.layoutManager = LinearLayoutManager(this)
         val db = FirebaseFirestore.getInstance()
 

@@ -96,7 +96,7 @@ IDload()
     }
 
     fun printDATA(data: DataClass) {
-        val recyclerview = findViewById<RecyclerView>(R.id.sec_recyclerView)
+        val recyclerview = findViewById<RecyclerView>(R.id.sec_display)
         recyclerview.layoutManager = LinearLayoutManager(this)
         val db = FirebaseFirestore.getInstance()
         val user = FirebaseAuth.getInstance().currentUser
