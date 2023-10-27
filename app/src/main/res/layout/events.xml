@@ -51,14 +51,7 @@
                 app:mcv_selectionColor="#00F"
                 />
 
-            <Button
-                android:id="@+id/add_event"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="#60AE8C"
-                android:text="Add Event"
-                android:textSize="16sp"/>
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/event_form"

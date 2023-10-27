@@ -1,5 +1,6 @@
 package com.varsitycollege.htchurchmobile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextMenu
@@ -25,11 +26,15 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+
 class Finances : AppCompatActivity() {
     private val TAG = "FinancesActivity"
-    private val financeHistoryList = ArrayList<FinanceData>() // Use FinanceData class
+    private val financeHistoryList = ArrayList<FinanceData>()
     private lateinit var financeHistoryAdapter: FinanceDataAdapter
-    private var totalAmount: Int = 0
+    private var totalAmount: Double = 0.0
+    private var totalTithes: Double = 0.0
+    private var totalDonations: Double = 0.0
+    private var totalFundRaised: Double = 0.0
 
     data class DataClass(var data: String)
 
@@ -52,7 +57,7 @@ class Finances : AppCompatActivity() {
                     val id = profiles["churchid"].toString()
                     Log.d("churchid", id)
                     iddata = DataClass(id)
-                    callback() // Call the callback when IDload is complete
+                    callback()
                 } else {
                     Log.d(TAG, "No such document")
                 }
@@ -78,12 +83,22 @@ class Finances : AppCompatActivity() {
             listView.adapter = financeHistoryAdapter
             registerForContextMenu(listView)
 
+            val totalCardView = findViewById<CardView>(R.id.totalCardView)
 
             val totalAmountTextView = findViewById<TextView>(R.id.totalAmountTextView)
 
-            // Now that IDload is complete, call fetchAndDisplayFinanceHistory
             fetchAndDisplayFinanceHistory()
 
+        }
+        val showTotalButton = findViewById<Button>(R.id.separateTotalButton)
+        val totalCardLayout = findViewById<FrameLayout>(R.id.totalCardLayout)
+
+        showTotalButton.setOnClickListener {
+            if (totalCardLayout.visibility == View.VISIBLE) {
+                totalCardLayout.visibility = View.GONE
+            } else {
+                totalCardLayout.visibility = View.VISIBLE
+            }
         }
         val toggleAddFinanceButton = findViewById<ImageButton>(R.id.showAddFinanceButton)
         val addFinanceOverlay = findViewById<FrameLayout>(R.id.addFinanceOverlay)
@@ -95,37 +110,51 @@ class Finances : AppCompatActivity() {
                 addFinanceOverlay.visibility = View.VISIBLE
             }
         }
+        val backButton = findViewById<ImageButton>(R.id.back_btn)
+
+        backButton.setOnClickListener {
+            val intent = Intent(this, Home::class.java)
+
+            startActivity(intent)
+
+            finish()
+        }
+
 
         val confirmButton = findViewById<Button>(R.id.confirmButtom)
         confirmButton.setOnClickListener {
-            // Capture data from EditText fields
             val typeOfExpense = findViewById<EditText>(R.id.typeOfExpense).text.toString()
-            val tithesValue = findViewById<EditText>(R.id.tighesInput).text.toString().toInt()
-            val donationsValue = findViewById<EditText>(R.id.donationsInput).text.toString().toInt()
-            val fundRaiserValue = findViewById<EditText>(R.id.fundInput).text.toString().toInt()
+            val tithesEditText = findViewById<EditText>(R.id.tighesInput)
+            val donationsEditText = findViewById<EditText>(R.id.donationsInput)
+            val fundRaiserEditText = findViewById<EditText>(R.id.fundInput)
+
+            val tithesValue = tithesEditText.text.toString().toDoubleOrNull() ?: 0.0
+            val donationsValue = donationsEditText.text.toString().toDoubleOrNull() ?: 0.0
+            val fundRaiserValue = fundRaiserEditText.text.toString().toDoubleOrNull() ?: 0.0
+
             val currentTime = Timestamp.now()
             val sdf = SimpleDateFormat("yyyy-MM-dd")
             val currentDate = sdf.format(currentTime.toDate())
+
+            totalAmount = tithesValue + donationsValue + fundRaiserValue
+
             if (iddata != null) {
                 val documentPath = "churchs/${iddata?.data}"
 
-                // Create a map for the new entry
                 val newEntry = mapOf(
                     "expenseInput" to typeOfExpense,
                     "tithes" to tithesValue,
                     "donations" to donationsValue,
                     "fundRaiser" to fundRaiserValue,
                     "confirmationTime" to currentTime,
-                    "total" to tithesValue + donationsValue + fundRaiserValue
+                    "total" to totalAmount
                 )
-
 
                 FirebaseFirestore.getInstance().document(documentPath).get()
                     .addOnSuccessListener { document ->
                         if (document != null) {
                             val existingFinanceData = document.get("finance") as Map<*, *>?
 
-                            // Check if there's existing data and convert it to a list
                             val existingFinanceList: MutableList<Map<String, Any>> =
                                 if (existingFinanceData != null && existingFinanceData["entries"] is List<*>) {
                                     (existingFinanceData["entries"] as List<*>).filterIsInstance<Map<String, Any>>()
@@ -134,10 +163,8 @@ class Finances : AppCompatActivity() {
                                     mutableListOf()
                                 }
 
-                            // Add the new entry to the existing data
                             existingFinanceList.add(newEntry)
 
-                            // Update the finance data with the new entry
                             val updatedFinanceData = mapOf("entries" to existingFinanceList)
 
                             FirebaseFirestore.getInstance()
@@ -157,18 +184,32 @@ class Finances : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     )
                                         .show()
-
-
+                                    val addFinanceOverlay = findViewById<FrameLayout>(R.id.addFinanceOverlay)
+                                    addFinanceOverlay.visibility = View.GONE
                                     fetchAndDisplayFinanceHistory()
                                     findViewById<EditText>(R.id.typeOfExpense).text.clear()
-                                      findViewById<EditText>(R.id.tighesInput).text.clear()
-                                    findViewById<EditText>(R.id.donationsInput).text.clear()
-                                findViewById<EditText>(R.id.fundInput).text.clear()
+                                    tithesEditText.text.clear()
+                                    donationsEditText.text.clear()
+                                    fundRaiserEditText.text.clear()
 
-                                    val addFinanceOverlay =
-                                        findViewById<FrameLayout>(R.id.addFinanceOverlay)
-                                    addFinanceOverlay.visibility = View.GONE
+                                    val tithesTextView = findViewById<TextView>(R.id.tithesTextView)
+                                    val donationsTextView =
+                                        findViewById<TextView>(R.id.donationsTextView)
+                                    val fundRaiserTextView =
+                                        findViewById<TextView>(R.id.fundRaiserTextView)
+                                    val totalAmountTextView =
+                                        findViewById<TextView>(R.id.totalAmountTextView)
+
+                                    tithesTextView.text = String.format("R %.2f", tithesValue)
+                                    donationsTextView.text = String.format("R %.2f", donationsValue)
+                                    fundRaiserTextView.text =
+                                        String.format("R %.2f", fundRaiserValue)
+                                    totalAmountTextView.text =
+                                        String.format("Total: R %.2f", totalAmount)
+
                                     calculateTotalAmount()
+                                    updateOverallTotal()
+
                                 }
                                 .addOnFailureListener { e ->
                                     Log.e(TAG, "Error saving data: $e")
@@ -180,11 +221,10 @@ class Finances : AppCompatActivity() {
                                         .show()
                                 }
                         } else {
-                            // If the document doesn't exist, create it with the initial entry
                             val initialFinanceData = mapOf("entries" to listOf(newEntry))
                             FirebaseFirestore.getInstance()
                                 .document(documentPath)
-                                .set(mapOf("finance" to initialFinanceData))
+                                .update(mapOf("finance" to initialFinanceData))
                                 .addOnSuccessListener {
                                     Log.d(
                                         TAG,
@@ -221,11 +261,66 @@ class Finances : AppCompatActivity() {
     }
 
     private fun calculateTotalAmount() {
-        financeHistoryList.forEach { it.calculateTotalAmount() }
+        var totalAmount = 0.0
+        for (entry in financeHistoryList) {
+            totalAmount += entry.tithesValue + entry.donationsValue + entry.fundRaiserValue
+        }
+        this.totalAmount = totalAmount
+    }
+
+    fun showSeparateTotals(view: View) {
+        Log.d(TAG, "showSeparateTotals clicked")
+        val totalCardLayout = findViewById<FrameLayout>(R.id.totalCardLayout)
+
+        if (totalCardLayout.visibility == View.VISIBLE) {
+            Log.d(TAG, "totalCardLayout is visible, hiding it.")
+            totalCardLayout.visibility = View.GONE
+        } else {
+            Log.d(TAG, "totalCardLayout is not visible, showing it.")
+            totalCardLayout.visibility = View.VISIBLE
+
+            val totalTithesTextView = findViewById<TextView>(R.id.totalTithesTextView)
+            val totalDonationsTextView = findViewById<TextView>(R.id.totalDonationsTextView)
+            val totalFundRaisedTextView = findViewById<TextView>(R.id.totalFundRaisedTextView)
+
+            val totalTithes = financeHistoryList.sumOf { it.tithesValue }
+            val totalDonations = financeHistoryList.sumOf { it.donationsValue }
+            val totalFundRaised = financeHistoryList.sumOf { it.fundRaiserValue }
+
+            totalTithesTextView.text = String.format("Total Tithes: R %.2f", totalTithes)
+            totalDonationsTextView.text = String.format("Total Donations: R %.2f", totalDonations)
+            totalFundRaisedTextView.text = String.format("Total Fund Raised: R %.2f", totalFundRaised)
+        }
+    }
+
+
+
+
+
+
+    fun showOverallTotal() {
+        for (entry in financeHistoryList) {
+            entry.calculateTotalAmount()
+        }
+
+        val overallTotalAmount = financeHistoryList.sumOf { it.totalAmount }
+
+        val overallTotalTextView = findViewById<TextView>(R.id.overallTotalTextView)
+        overallTotalTextView.text = String.format("Overall Total: R %.2f", overallTotalAmount)
+    }
+
+    private fun updateOverallTotal() {
+        calculateTotalAmount()
+
+        val overallTotalAmount = financeHistoryList.sumOf { it.totalAmount }
+
+        val overallTotalTextView = findViewById<TextView>(R.id.overallTotalTextView)
+        overallTotalTextView.text = String.format("Overall Total: R %.2f", overallTotalAmount)
     }
 
     private fun fetchAndDisplayFinanceHistory() {
-        financeHistoryList.clear() // Clear the list before fetching new data
+        financeHistoryList.clear()
+
 
         if (iddata != null) {
             val documentPath = "churchs/${iddata?.data}"
@@ -238,48 +333,69 @@ class Finances : AppCompatActivity() {
 
                         val financeData = document.get("finance") as Map<String, Any>?
                         val entries = financeData?.get("entries") as List<Map<String, Any>>?
-
-                        // Inside fetchAndDisplayFinanceHistory
+                        var totalTithes = 0.0
+                        var totalDonations = 0.0
+                        var totalFundRaised = 0.0
                         if (entries != null) {
                             for (entryMap in entries) {
                                 val typeOfExpense = entryMap["expenseInput"] as? String
-                                val tithesValue = entryMap["tithes"] as? Long
-                                val donationsValue = entryMap["donations"] as? Long
-                                val fundRaiserValue = entryMap["fundRaiser"] as? Long
+                                val tithesValue = entryMap["tithes"] as? Double
+                                val donationsValue = entryMap["donations"] as? Double
+                                val fundRaiserValue =
+                                    entryMap["fundRaiser"] as? Double
                                 val confirmationTime = entryMap["confirmationTime"] as Timestamp
 
-                                // Check the data for validity and handle it accordingly
                                 if (typeOfExpense != null && confirmationTime != null) {
-                                    val tithes = tithesValue?.toInt() ?: 0
-                                    val donations = donationsValue?.toInt() ?: 0
-                                    val fundRaiser = fundRaiserValue?.toInt() ?: 0
+                                    val tithes = tithesValue ?: 0.0
+                                    val donations =
+                                        donationsValue ?: 0.0
+                                    val fundRaiser =
+                                        fundRaiserValue ?: 0.0
 
                                     val (month, date, time) = calculateMonthDateAndTime(
                                         confirmationTime
-                                    ) // Calculate date and time
-
-                                    // Create the FinanceData object
+                                    )
+                                    if (tithesValue != null) {
+                                        totalTithes += tithesValue
+                                    }
+                                    if (donationsValue != null) {
+                                        totalDonations += donationsValue
+                                    }
+                                    if (fundRaiserValue != null) {
+                                        totalFundRaised += fundRaiserValue
+                                    }
                                     val financeEntry = FinanceData(
                                         typeOfExpense,
                                         tithes,
                                         donations,
                                         fundRaiser,
                                         confirmationTime,
-                                        month
-
+                                        month.toDouble()
                                     )
 
+                                    financeEntry.calculateTotalAmount()
+
+
                                     financeHistoryList.add(financeEntry)
-                                } else {
-                                    // Handle or log the invalid data more gracefully
+                                }
+                                else {
                                     Log.e(TAG, "Invalid data format: $entryMap")
                                 }
 
                             }
-                            // Notify the adapter that the data has changed
                             financeHistoryAdapter.notifyDataSetChanged()
                             Log.d(TAG, "Finance data retrieved and displayed: $financeHistoryList")
                             calculateTotalAmount()
+                            showOverallTotal()
+
+                            val totalTithesTextView = findViewById<TextView>(R.id.totalTithesTextView)
+                            val totalDonationsTextView = findViewById<TextView>(R.id.totalDonationsTextView)
+                            val totalFundRaisedTextView = findViewById<TextView>(R.id.totalFundRaisedTextView)
+
+                            totalTithesTextView.text = String.format("Total Tithes: R %.2f", totalTithes)
+                            totalDonationsTextView.text = String.format("Total Donations: R %.2f", totalDonations)
+                            totalFundRaisedTextView.text = String.format("Total Fund Raised: R %.2f", totalFundRaised)
+
                         } else {
                             Log.d(TAG, "No finance entries found")
                         }
@@ -334,7 +450,6 @@ class Finances : AppCompatActivity() {
                     val documentPath = "churchs/${iddata?.data}"
                     val db = FirebaseFirestore.getInstance()
 
-                    // Retrieve the current list of entries from Firestore
                     db.document(documentPath)
                         .get()
                         .addOnSuccessListener { documentSnapshot ->
@@ -344,50 +459,53 @@ class Finances : AppCompatActivity() {
                                 val entries = financeData?.get("entries") as List<Map<String, Any>>?
 
                                 if (entries != null) {
-                                    // Identify the entry to delete based on a unique identifier
-                                    // For example, if you have a unique entry ID, you can use that
-                                    // Here, I'll assume you're using confirmationTime as a unique identifier
+
                                     val uniqueIdentifier = selectedEntry.confirmationTime
 
-                                    // Filter the list to exclude the entry with the matching unique identifier
                                     val updatedEntries = entries.filterNot { entry ->
                                         entry["confirmationTime"] == uniqueIdentifier
                                     }
 
-                                    // Update the Firestore document with the modified list
-                                    val updatedData = mapOf("finance.entries" to updatedEntries)
+                                    val updatedData =
+                                        mapOf("finance" to mapOf("entries" to updatedEntries))
                                     db.document(documentPath)
                                         .update(updatedData)
                                         .addOnSuccessListener {
                                             Log.d(TAG, "Entry deleted from Firestore")
+
+                                            fetchAndDisplayFinanceHistory()
                                         }
                                         .addOnFailureListener { e ->
                                             Log.e(TAG, "Error deleting entry from Firestore: $e")
                                         }
-
                                 }
                             }
                         }
                 }
 
-                // Remove the entry from the local list
                 financeHistoryList.removeAt(position)
                 financeHistoryAdapter.notifyDataSetChanged()
+
+                updateOverallTotal()
 
                 return true
             }
         }
         return super.onContextItemSelected(item)
     }
+    fun closeAddFinanceOverlay(view: View) {
+        val addFinanceOverlay = findViewById<FrameLayout>(R.id.addFinanceOverlay)
+        addFinanceOverlay.visibility = View.GONE
+    }
 
 
     data class FinanceData(
         val typeOfExpense: String,
-        val tithesValue: Int,
-        val donationsValue: Int,
-        val fundRaiserValue: Int,
+        val tithesValue: Double,
+        val donationsValue: Double,
+        val fundRaiserValue: Double,
         val confirmationTime: Timestamp,
-        var totalAmount: Int = 0
+        var totalAmount: Double = 0.0
     ) {
         val month: Int
         val date: Int
@@ -397,7 +515,7 @@ class Finances : AppCompatActivity() {
             val calendar = Calendar.getInstance()
             calendar.time = confirmationTime.toDate()
 
-            this.month = calendar[Calendar.MONTH] + 1 // Adding 1 because months are 0-based
+            this.month = calendar[Calendar.MONTH] + 1
             this.date = calendar[Calendar.DATE]
 
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -408,9 +526,9 @@ class Finances : AppCompatActivity() {
             fun fromMap(map: Map<String, Any>): FinanceData {
                 return FinanceData(
                     map["expenseInput"] as String,
-                    (map["tighes"] as Long).toInt(),
-                    (map["donations"] as Long).toInt(),
-                    (map["fundRaiser"] as Long).toInt(),
+                    (map["tithes"] as Long).toDouble(),
+                    (map["donations"] as Long).toDouble(),
+                    (map["fundRaiser"] as Long).toDouble(),
                     map["confirmationTime"] as Timestamp
                 )
             }
@@ -419,7 +537,7 @@ class Finances : AppCompatActivity() {
         fun toMap(): Map<String, Any> {
             return mapOf(
                 "expenseInput" to typeOfExpense,
-                "tighes" to tithesValue,
+                "tithes" to tithesValue,
                 "donations" to donationsValue,
                 "fundRaiser" to fundRaiserValue,
                 "confirmationTime" to confirmationTime
@@ -429,6 +547,7 @@ class Finances : AppCompatActivity() {
         fun calculateTotalAmount() {
             totalAmount = tithesValue + donationsValue + fundRaiserValue
         }
+
 
         override fun toString(): String {
             return "Type of Expense: $typeOfExpense\n" +

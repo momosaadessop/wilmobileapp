@@ -34,13 +34,7 @@
 
 
 
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/exit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_logout"
-                app:fab_size="mini"
-                app:fab_colorNormal="@android:color/transparent"/>
+
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/finance"
@@ -69,6 +63,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_member"
+                app:fab_size="mini"
+                app:fab_colorNormal="@android:color/transparent"/>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logout"
                 app:fab_size="mini"
                 app:fab_colorNormal="@android:color/transparent"/>
 

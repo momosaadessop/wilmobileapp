@@ -8,7 +8,6 @@
     android:padding="16dp"
     tools:context=".Finances">
 
-    <!-- CardView for Adding Finances -->
     <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +26,14 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Title -->
+            <ImageButton
+                android:id="@+id/closeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_close"
+                android:padding="8dp"
+                android:onClick="closeAddFinanceOverlay"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,7 +81,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="0"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
 
@@ -103,7 +110,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="0"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
 
@@ -131,7 +139,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="0"
-                    android:textSize="17sp" />
+                    android:textSize="17sp"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
 
 
