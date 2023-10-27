@@ -123,140 +123,152 @@ class Finances : AppCompatActivity() {
 
         val confirmButton = findViewById<Button>(R.id.confirmButtom)
         confirmButton.setOnClickListener {
-            val typeOfExpense = findViewById<EditText>(R.id.typeOfExpense).text.toString()
-            val tithesEditText = findViewById<EditText>(R.id.tighesInput)
-            val donationsEditText = findViewById<EditText>(R.id.donationsInput)
-            val fundRaiserEditText = findViewById<EditText>(R.id.fundInput)
+            try {
+                val typeOfExpense = findViewById<EditText>(R.id.typeOfExpense).text.toString()
+                val tithesEditText = findViewById<EditText>(R.id.tighesInput)
+                val donationsEditText = findViewById<EditText>(R.id.donationsInput)
+                val fundRaiserEditText = findViewById<EditText>(R.id.fundInput)
 
-            val tithesValue = tithesEditText.text.toString().toDoubleOrNull() ?: 0.0
-            val donationsValue = donationsEditText.text.toString().toDoubleOrNull() ?: 0.0
-            val fundRaiserValue = fundRaiserEditText.text.toString().toDoubleOrNull() ?: 0.0
+                val tithesValue = tithesEditText.text.toString().toDoubleOrNull() ?: 0.0
+                val donationsValue = donationsEditText.text.toString().toDoubleOrNull() ?: 0.0
+                val fundRaiserValue = fundRaiserEditText.text.toString().toDoubleOrNull() ?: 0.0
 
-            val currentTime = Timestamp.now()
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            val currentDate = sdf.format(currentTime.toDate())
+                val currentTime = Timestamp.now()
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val currentDate = sdf.format(currentTime.toDate())
 
-            totalAmount = tithesValue + donationsValue + fundRaiserValue
+                totalAmount = tithesValue + donationsValue + fundRaiserValue
 
-            if (iddata != null) {
-                val documentPath = "churchs/${iddata?.data}"
+                if (iddata != null) {
+                    val documentPath = "churchs/${iddata?.data}"
 
-                val newEntry = mapOf(
-                    "expenseInput" to typeOfExpense,
-                    "tithes" to tithesValue,
-                    "donations" to donationsValue,
-                    "fundRaiser" to fundRaiserValue,
-                    "confirmationTime" to currentTime,
-                    "total" to totalAmount
-                )
+                    val newEntry = mapOf(
+                        "expenseInput" to typeOfExpense,
+                        "tithes" to tithesValue,
+                        "donations" to donationsValue,
+                        "fundRaiser" to fundRaiserValue,
+                        "confirmationTime" to currentTime,
+                        "total" to totalAmount
+                    )
 
-                FirebaseFirestore.getInstance().document(documentPath).get()
-                    .addOnSuccessListener { document ->
-                        if (document != null) {
-                            val existingFinanceData = document.get("finance") as Map<*, *>?
+                    FirebaseFirestore.getInstance().document(documentPath).get()
+                        .addOnSuccessListener { document ->
+                            if (document != null) {
+                                val existingFinanceData = document.get("finance") as Map<*, *>?
 
-                            val existingFinanceList: MutableList<Map<String, Any>> =
-                                if (existingFinanceData != null && existingFinanceData["entries"] is List<*>) {
-                                    (existingFinanceData["entries"] as List<*>).filterIsInstance<Map<String, Any>>()
-                                        .toMutableList()
-                                } else {
-                                    mutableListOf()
-                                }
+                                val existingFinanceList: MutableList<Map<String, Any>> =
+                                    if (existingFinanceData != null && existingFinanceData["entries"] is List<*>) {
+                                        (existingFinanceData["entries"] as List<*>).filterIsInstance<Map<String, Any>>()
+                                            .toMutableList()
+                                    } else {
+                                        mutableListOf()
+                                    }
 
-                            existingFinanceList.add(newEntry)
+                                existingFinanceList.add(newEntry)
 
-                            val updatedFinanceData = mapOf("entries" to existingFinanceList)
+                                val updatedFinanceData = mapOf("entries" to existingFinanceList)
 
-                            FirebaseFirestore.getInstance()
-                                .document(documentPath)
-                                .set(
-                                    mapOf("finance" to updatedFinanceData),
-                                    SetOptions.merge()
-                                )
-                                .addOnSuccessListener {
-                                    Log.d(
-                                        TAG,
-                                        "Data saved successfully for church ID: ${iddata?.data}"
+                                FirebaseFirestore.getInstance()
+                                    .document(documentPath)
+                                    .set(
+                                        mapOf("finance" to updatedFinanceData),
+                                        SetOptions.merge()
                                     )
-                                    Toast.makeText(
-                                        this@Finances,
-                                        "Data saved successfully",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
-                                    val addFinanceOverlay = findViewById<FrameLayout>(R.id.addFinanceOverlay)
-                                    addFinanceOverlay.visibility = View.GONE
-                                    fetchAndDisplayFinanceHistory()
-                                    findViewById<EditText>(R.id.typeOfExpense).text.clear()
-                                    tithesEditText.text.clear()
-                                    donationsEditText.text.clear()
-                                    fundRaiserEditText.text.clear()
+                                    .addOnSuccessListener {
+                                        Log.d(
+                                            TAG,
+                                            "Data saved successfully for church ID: ${iddata?.data}"
+                                        )
+                                        Toast.makeText(
+                                            this@Finances,
+                                            "Data saved successfully",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                        val addFinanceOverlay =
+                                            findViewById<FrameLayout>(R.id.addFinanceOverlay)
+                                        addFinanceOverlay.visibility = View.GONE
+                                        fetchAndDisplayFinanceHistory()
+                                        findViewById<EditText>(R.id.typeOfExpense).text.clear()
+                                        tithesEditText.text.clear()
+                                        donationsEditText.text.clear()
+                                        fundRaiserEditText.text.clear()
 
-                                    val tithesTextView = findViewById<TextView>(R.id.tithesTextView)
-                                    val donationsTextView =
-                                        findViewById<TextView>(R.id.donationsTextView)
-                                    val fundRaiserTextView =
-                                        findViewById<TextView>(R.id.fundRaiserTextView)
-                                    val totalAmountTextView =
-                                        findViewById<TextView>(R.id.totalAmountTextView)
+                                        val tithesTextView =
+                                            findViewById<TextView>(R.id.tithesTextView)
+                                        val donationsTextView =
+                                            findViewById<TextView>(R.id.donationsTextView)
+                                        val fundRaiserTextView =
+                                            findViewById<TextView>(R.id.fundRaiserTextView)
+                                        val totalAmountTextView =
+                                            findViewById<TextView>(R.id.totalAmountTextView)
 
-                                    tithesTextView.text = String.format("R %.2f", tithesValue)
-                                    donationsTextView.text = String.format("R %.2f", donationsValue)
-                                    fundRaiserTextView.text =
-                                        String.format("R %.2f", fundRaiserValue)
-                                    totalAmountTextView.text =
-                                        String.format("Total: R %.2f", totalAmount)
 
-                                    calculateTotalAmount()
-                                    updateOverallTotal()
 
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.e(TAG, "Error saving data: $e")
-                                    Toast.makeText(
-                                        this@Finances,
-                                        "Error saving data: $e",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
-                                }
-                        } else {
-                            val initialFinanceData = mapOf("entries" to listOf(newEntry))
-                            FirebaseFirestore.getInstance()
-                                .document(documentPath)
-                                .update(mapOf("finance" to initialFinanceData))
-                                .addOnSuccessListener {
-                                    Log.d(
-                                        TAG,
-                                        "Finance document created for church ID: ${iddata?.data}"
-                                    )
-                                    Toast.makeText(
-                                        this@Finances,
-                                        "Finance document created",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.e(TAG, "Error creating finance document: $e")
-                                    Toast.makeText(
-                                        this@Finances,
-                                        "Error creating finance document: $e",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+
+                                        calculateTotalAmount()
+                                        updateOverallTotal()
+                                        try {
+
+
+                                            tithesTextView.text =
+                                                String.format("R %.2f", tithesValue)
+                                            donationsTextView.text =
+                                                String.format("R %.2f", donationsValue)
+                                            fundRaiserTextView.text =
+                                                String.format("R %.2f", fundRaiserValue)
+                                            totalAmountTextView.text =
+                                                String.format("Total: R %.2f", totalAmount)
+                                        }catch (E:Exception){}
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e(TAG, "Error saving data: $e")
+                                        Toast.makeText(
+                                            this@Finances,
+                                            "Error saving data: $e",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                    }
+                            } else {
+                                val initialFinanceData = mapOf("entries" to listOf(newEntry))
+                                FirebaseFirestore.getInstance()
+                                    .document(documentPath)
+                                    .update(mapOf("finance" to initialFinanceData))
+                                    .addOnSuccessListener {
+                                        Log.d(
+                                            TAG,
+                                            "Finance document created for church ID: ${iddata?.data}"
+                                        )
+                                        Toast.makeText(
+                                            this@Finances,
+                                            "Finance document created",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e(TAG, "Error creating finance document: $e")
+                                        Toast.makeText(
+                                            this@Finances,
+                                            "Error creating finance document: $e",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                            }
                         }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e(TAG, "Error retrieving existing data: $e")
-                        Toast.makeText(
-                            this@Finances,
-                            "Error retrieving existing data: $e",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-            } else {
-                Toast.makeText(this@Finances, "Error getting church ID", Toast.LENGTH_SHORT).show()
-            }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "Error retrieving existing data: $e")
+                            Toast.makeText(
+                                this@Finances,
+                                "Error retrieving existing data: $e",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                } else {
+                    Toast.makeText(this@Finances, "Error getting church ID", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }catch (e:Exception){}
         }
     }
 
