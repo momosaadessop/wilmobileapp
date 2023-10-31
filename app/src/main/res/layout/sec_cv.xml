@@ -15,21 +15,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="#80FFFFFF"
             android:padding="20dp">
+
+            <TextView
+                android:id="@+id/sec_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="date"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp">
 
                 <TextView
                     android:id="@+id/sec_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="name"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp"/>
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/sec_surname"
@@ -37,9 +46,8 @@
                     android:layout_height="wrap_content"
                     android:text="surname"
                     android:layout_marginLeft="7dp"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp"/>
+                    android:textSize="27sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -51,25 +59,21 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/sec_churchname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="worship name"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/secid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="secid"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/sec_date"
+                android:id="@+id/sec_churchname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="date"
-                android:textSize="18sp" />
+                android:text="worship name"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
