@@ -37,7 +37,6 @@ import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 
 
-
 class Events:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +52,12 @@ class Events:AppCompatActivity() {
         db.collection("events")
             .get()
             .addOnSuccessListener { result ->
+                val decoratedDays = HashSet<CalendarDay>()
                 for (document in result) {
                     // Get the event date as a string
                     val dateString = document.data["date"] as String
                     // Get the event name
                     val eventName = document.data["name"] as String
-                    //Log.d("Firestore", "Date string: $dateString")
                     // Convert the date string to a Calendar object
                     val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
                     val date = sdf.parse(dateString)
@@ -70,15 +69,18 @@ class Events:AppCompatActivity() {
                         org.threeten.bp.ZoneId.systemDefault()
                     )
                     val localDate = zonedDateTime.toLocalDate()
-                   // Log.d("Firestore", "LocalDate: $localDate")
                     // Create a new CalendarDay object and add it to the list
                     val day = CalendarDay.from(localDate)
-                    // Create a new EventDecorator and add it to the calendar
-                    val decorator = EventDecorator(Color.WHITE, eventName, listOf(day))
-                    calendarView.addDecorator(decorator)
+                    // Check if this day has already been decorated
+                    if (!decoratedDays.contains(day)) {
+                        // If not, create a new EventDecorator and add it to the calendar
+                        val decorator = EventDecorator(Color.WHITE, eventName, listOf(day))
+                        calendarView.addDecorator(decorator)
+                        // Add this day to the set of decorated days
+                        decoratedDays.add(day)
+                    }
                 }
             }
-
 
         val loginBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -187,7 +189,16 @@ class Events:AppCompatActivity() {
                 // Add event to calendar
                 calendarView.addDecorator(EventDecorator(Color.WHITE, name, listOf(day)))
                 Toast.makeText(this, "Event $name has been added successfully.", Toast.LENGTH_SHORT).show()
-
+                val intent = Intent(this, Home::class.java)
+                intent.putExtra("eventName", name)
+                intent.putExtra("eventDate", date)
+                intent.putExtra("eventDescription", description)
+                intent.putExtra("eventAddress", address)
+                intent.putExtra("eventStartTime", startTime)
+                intent.putExtra("eventEndTime", endTime)
+                intent.putExtra("eventChurch", church)
+                startActivity(intent)
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.w("DB upload", "Error adding document", e)
@@ -219,6 +230,8 @@ class Events:AppCompatActivity() {
             }
     }
 }
+
+
 class EventDecorator(private val color: Int, private val text: String, dates: Collection<CalendarDay>) : DayViewDecorator {
     private val dates: HashSet<CalendarDay> = HashSet(dates)
     override fun shouldDecorate(day: CalendarDay): Boolean {
@@ -228,6 +241,7 @@ class EventDecorator(private val color: Int, private val text: String, dates: Co
         view.addSpan(BottomTextSpan(text, color))
     }
 }
+
 class BottomTextSpan(private val text: String, private val color: Int) : LineBackgroundSpan {
     override fun drawBackground(
         c: Canvas, p: Paint, left: Int, right: Int,
@@ -244,3 +258,4 @@ class BottomTextSpan(private val text: String, private val color: Int) : LineBac
         p.textSize = oldTextSize
     }
 }
+

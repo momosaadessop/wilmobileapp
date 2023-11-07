@@ -4,7 +4,6 @@
     xmlns:tools2="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!-- res/layout/finance_list_item.xml -->
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +12,6 @@
         tools:ignore="MissingConstraints"
         tools2:ignore="MissingConstraints">
 
-        <!-- Expense Type at the top left -->
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -41,7 +39,6 @@
                 android:text=""
                 />
         </TableRow>
-        <!-- Other financial information rows -->
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -62,6 +59,12 @@
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            android:layout_weight="1"
+            android:text=""
+            />
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -82,6 +85,39 @@
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            android:layout_weight="1"
+            android:text=""
+            />
+        <TableRow>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Donation Source:"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="start"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/donationSourceTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="16sp"
+                android:textColor="#000000" />
+        </TableRow>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            android:layout_weight="1"
+            android:text=""
+            />
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -93,6 +129,7 @@
                 android:gravity="start"
                 android:textColor="#000000"/>
 
+
             <TextView
                 android:id="@+id/tithesTextView"
                 android:layout_width="0dp"
@@ -102,6 +139,12 @@
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            android:layout_weight="1"
+            android:text=""
+            />
         <TableRow>
             <TextView
                 android:layout_width="0dp"

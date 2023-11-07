@@ -1,10 +1,15 @@
 package com.varsitycollege.htchurchmobile
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
+import android.text.style.LineBackgroundSpan
 import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
@@ -27,7 +32,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import com.jakewharton.threetenabp.AndroidThreeTen
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Locale
+import android.text.Html
+import android.widget.ImageButton
+
 
 class Home:AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -37,7 +54,28 @@ class Home:AppCompatActivity() {
         setContentView(R.layout.home)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         securGuard()
-
+        val eventName = intent.getStringExtra("eventName")
+        val eventDate = intent.getStringExtra("eventDate")
+        val eventDescription = intent.getStringExtra("eventDescription")
+        val eventAddress = intent.getStringExtra("eventAddress")
+        val eventStartTime = intent.getStringExtra("eventStartTime")
+        val eventEndTime = intent.getStringExtra("eventEndTime")
+        val eventChurch = intent.getStringExtra("eventChurch")
+        val eventNameTextView = findViewById<TextView>(R.id.eventNameTextView)
+        val eventDateTextView = findViewById<TextView>(R.id.eventDateTextView)
+        val eventDescriptionTextView = findViewById<TextView>(R.id.eventDescriptionTextView)
+        val eventAddressTextView = findViewById<TextView>(R.id.eventAddressTextView)
+        val eventStartTimeTextView = findViewById<TextView>(R.id.eventStartTimeTextView)
+        val eventEndTimeTextView = findViewById<TextView>(R.id.eventEndTimeTextView)
+        val eventChurchTextView = findViewById<TextView>(R.id.eventChurchTextView)
+        // Populate the TextView elements with event data
+        eventNameTextView.text = eventName
+        eventDateTextView.text = eventDate
+        eventDescriptionTextView.text = eventDescription
+        eventAddressTextView.text = eventAddress
+        eventStartTimeTextView.text = eventStartTime
+        eventEndTimeTextView.text = eventEndTime
+        eventChurchTextView.text = eventChurch
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -52,7 +90,6 @@ class Home:AppCompatActivity() {
 
                 R.id.menu_event -> {
                     val intent = Intent(this, Events::class.java)
-
                     startActivity(intent)
                     overridePendingTransition(0, 0)
                     finish()
@@ -122,8 +159,17 @@ class Home:AppCompatActivity() {
 
 
         }
-        val menu: FloatingActionMenu = findViewById(R.id.menu)
 
+
+        val eventsAddButton: ImageButton = findViewById(R.id.eventsCreate_btn)
+        eventsAddButton.setOnClickListener {
+            // Navigate to another page
+            val intent = Intent(this,Events::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val menu: FloatingActionMenu = findViewById(R.id.menu)
         val profiles: FloatingActionButton = findViewById(R.id.profile_button)
         profiles.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
@@ -176,12 +222,10 @@ class Home:AppCompatActivity() {
             finish()
             menu.close(true)
         }
-
         val financials: FloatingActionButton = findViewById(R.id.finance)
         financials.setOnClickListener {
 
             val intent = Intent(this, Finances::class.java)
-
             startActivity(intent)
             overridePendingTransition(0, 0)
             finish()
@@ -190,14 +234,43 @@ class Home:AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawer_layout)
         actionBarDrawerToggle =
             ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close)
-
         drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
-
         details()
+        EventClosestToCurrentDate()
+        GetChurchDetails()
+        AndroidThreeTen.init(this)
+        val calendarView: MaterialCalendarView = findViewById(R.id.calendarViewHonme)
+        val currentDate = CalendarDay.today()
+        calendarView.setDateSelected(currentDate, true)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("events")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val dateString = document.data["date"] as String
+                    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    val date = sdf.parse(dateString)
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date
+                    val zonedDateTime = org.threeten.bp.ZonedDateTime.ofInstant(
+                        org.threeten.bp.Instant.ofEpochMilli(calendar.timeInMillis),
+                        org.threeten.bp.ZoneId.systemDefault()
+                    )
+                    val localDate = zonedDateTime.toLocalDate()
+                    val day = CalendarDay.from(localDate)
+                    val decorator = EventDecorator(Color.BLUE, listOf(day))
+                    calendarView.addDecorator(decorator)
+                }
+            }
+
+        fetchAndDisplayFinancialData()
     }
+
+
+
     private fun securGuard() {
-// this checks user tokens
+        // this checks user tokens
         // if invalid forces the user to login again
         // if deleted forces the user out of the app
         val tempusSecurity = FirebaseAuth.getInstance()
@@ -214,13 +287,188 @@ class Home:AppCompatActivity() {
             }
         }
     }
+
+
+    fun fetchAndDisplayFinancialData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val userEmail = user?.email
+        val parts = userEmail!!.split('@', '.')
+        val userID = parts[0] + parts[1]
+
+        Log.d("userid", userID)
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("pastors").document(userID)
+
+        docRef.get()
+            .addOnSuccessListener { doc ->
+                if (doc != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${doc.data}")
+                    val userDet = doc.get("userDetails") as Map<String, Any>
+                    // Extract the church ID
+                    val churchId = userDet["churchid"].toString()
+                    Log.d("Church ID", "Church ID: $churchId")
+
+                    db.collection("churchs").document(churchId)
+                        .get()
+                        .addOnSuccessListener { churchDoc ->
+                            if (churchDoc != null) {
+                                Log.d(ContentValues.TAG, "Church DocumentSnapshot data: ${churchDoc.data}")
+                                val financeData = churchDoc.get("finance") as Map<String, Any>?
+
+                                if (financeData != null) {
+                                    val entries = financeData["entries"] as List<Map<String, Any>>?
+
+                                    if (entries != null) {
+                                        var totalTithes = 0.0
+                                        var totalDonations = 0.0
+                                        var totalFundRaised = 0.0
+
+                                        for (entryMap in entries) {
+                                            val tithesValue = entryMap["tithes"] as Double
+                                            val donationsValue = entryMap["donations"] as Double
+                                            val fundRaiserValue = entryMap["fundRaiser"] as Double
+
+                                            totalTithes += tithesValue
+                                            totalDonations += donationsValue
+                                            totalFundRaised += fundRaiserValue
+                                        }
+
+                                        // Get references to the TextViews
+                                        val tithesTextView: TextView = findViewById(R.id.tithesTextViewHome)
+                                        val donationsTextView: TextView = findViewById(R.id.donationsTextViewHome)
+                                        val fundRaisedTextView: TextView = findViewById(R.id.fundraisedTextViewHome)
+
+                                        // Set the text of the TextViews with the overall totals
+                                        tithesTextView.text = String.format("Total Tithes:\nR %.2f", totalTithes)
+                                        donationsTextView.text = String.format("Total Donations:\nR %.2f", totalDonations)
+                                        fundRaisedTextView.text = String.format("Total Fund Raised:\nR %.2f", totalFundRaised)
+                                    }
+                                } else {
+                                    Log.d("No finance document", "No finance document")
+                                }
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.d("get failed with ", "get failed with ", exception)
+                        }
+                }
+            }
+    }
+
+
+    fun GetChurchDetails() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val userEmail = user?.email
+        val parts = userEmail!!.split('@', '.')
+        val userID = parts[0] + parts[1]
+        Log.d("userid", userID)
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("pastors").document(userID)
+        docRef.get()
+            .addOnSuccessListener { doc ->
+                if (doc != null) {
+                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${doc.data}")
+                    val userDet = doc.get("userDetails") as Map<String, Any>
+                    // Extract the church ID
+                    val id = userDet["churchid"].toString()
+                    Log.d("Church ID", "Church ID: $id")
+                    db.collection("churchs").document(id)
+                        .get()
+                        .addOnSuccessListener { churchDoc ->
+                            if (churchDoc != null) {
+                                Log.d(ContentValues.TAG, "Church DocumentSnapshot data: ${churchDoc.data}")
+                                val churchDet = churchDoc.get("churchDetails") as Map<String, Any>
+                                val churchname = churchDet["churchname"].toString()
+                                val membersNum = churchDet["members"].toString()
+                                val pastors = churchDet["pastors"].toString()
+                                val location = churchDet["location"].toString()
+                                Log.d("Location", "Location: $location")
+                                Log.d("churchname", "Location: $churchname")
+                                Log.d("membersNum", "membersNum: $membersNum")
+                                Log.d("pastors", "pastors: $pastors")
+                                // Get references to the TextViews
+                                val churchNameTextView: TextView = findViewById(R.id.churchNameTextView)
+                                val churchLocationTextView: TextView = findViewById(R.id.churchLocationTextView)
+                                val churchMembersTextView: TextView = findViewById(R.id.churchMembersTextView)
+                                val churchPastorsTextView: TextView = findViewById(R.id.churchPastorsTextView)
+                                churchNameTextView.text = Html.fromHtml("<b>Church Name:</b><br>$churchname", Html.FROM_HTML_MODE_COMPACT)
+                                churchLocationTextView.text = Html.fromHtml("<b>Location:</b><br>$location", Html.FROM_HTML_MODE_COMPACT)
+                                churchMembersTextView.text = Html.fromHtml("<b>Members:</b><br>$membersNum", Html.FROM_HTML_MODE_COMPACT)
+                                churchPastorsTextView.text = Html.fromHtml("<b>Pastors:</b><br>$pastors", Html.FROM_HTML_MODE_COMPACT)
+                            } else {
+                                Log.d("No such document", "No such document")
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.d("get failed with ", "get failed with ", exception)
+                        }
+                } else {
+                    Log.d("No such document", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("get failed with ", "get failed with ", exception)
+            }
+    }
+
+
+    fun EventClosestToCurrentDate() {
+        val db = FirebaseFirestore.getInstance()
+        val eventList = ArrayList<Event>()
+        db.collection("events")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val name = document.getString("name") ?: ""
+                    val description = document.getString("description") ?: ""
+                    val church = document.getString("church") ?: ""
+                    val location = document.getString("address") ?: ""
+                    val eventdate = document.getString("date") ?: ""
+                    val startTime = document.getString("start_time") ?: ""
+                    val endTime = document.getString("end_time") ?: ""
+                    val event = Event(name, description, church, location, eventdate, startTime, endTime)
+                    eventList.add(event)
+                }
+                val eventsSorted = eventList.sortedBy { LocalDate.parse(it.date) }
+                val currentDay = LocalDate.now()
+                val closestEvent = eventsSorted.firstOrNull { LocalDate.parse(it.date) > currentDay }
+                // Initialize the TextView elements
+                val eventNameTextView = findViewById<TextView>(R.id.eventNameTextView)
+                val eventDateTextView = findViewById<TextView>(R.id.eventDateTextView)
+                val eventDescriptionTextView = findViewById<TextView>(R.id.eventDescriptionTextView)
+                val eventAddressTextView = findViewById<TextView>(R.id.eventAddressTextView)
+                val eventStartTimeTextView = findViewById<TextView>(R.id.eventStartTimeTextView)
+                val eventEndTimeTextView = findViewById<TextView>(R.id.eventEndTimeTextView)
+                val eventChurchTextView = findViewById<TextView>(R.id.eventChurchTextView)
+                if (closestEvent != null) {
+                    // Populate the TextView elements with the closest event data
+                    eventNameTextView.text = Html.fromHtml("<b>Name:</b><br>${closestEvent.name}", Html.FROM_HTML_MODE_COMPACT)
+                    eventDateTextView.text = Html.fromHtml("<b>Date:</b><br>${closestEvent.date}", Html.FROM_HTML_MODE_COMPACT)
+                    eventDescriptionTextView.text = Html.fromHtml("<b>Description:</b><br>${closestEvent.description}", Html.FROM_HTML_MODE_COMPACT)
+                    eventAddressTextView.text = Html.fromHtml("<b>Address:</b><br>${closestEvent.location}", Html.FROM_HTML_MODE_COMPACT)
+                    eventStartTimeTextView.text = Html.fromHtml("<b>Start Time:</b><br>${closestEvent.startTime}", Html.FROM_HTML_MODE_COMPACT)
+                    eventEndTimeTextView.text = Html.fromHtml("<b>End Time:</b><br>${closestEvent.endTime}", Html.FROM_HTML_MODE_COMPACT)
+                    eventChurchTextView.text = Html.fromHtml("<b>Church:</b><br>${closestEvent.church}", Html.FROM_HTML_MODE_COMPACT)
+
+
+                } else {
+                    // Display a message to the user when no event is found
+                    val message = "Please add an event"
+
+                    eventDescriptionTextView.text = message
+
+                }
+            }
+    }
+
+
+
     fun details() {
         val user = FirebaseAuth.getInstance().currentUser
         val userEmail = user?.email
         if(userEmail != null) {
             val parts = userEmail!!.split('@', '.')
             val userID = parts[0] + parts[1]
-
             val storage = FirebaseStorage.getInstance()
             val imageRef = storage.getReference().child(userID)
             val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -232,14 +480,12 @@ class Home:AppCompatActivity() {
             email.text = userEmail
             imageRef.downloadUrl.addOnSuccessListener { Uri ->
                 val url = Uri.toString()
-
                 val profileimage = RequestOptions().transform(CircleCrop())
                 Glide.with(this)
                     .load(url)
                     .apply(profileimage)
                     .into(image)
             }
-
             image.setOnClickListener()
             {
 
@@ -356,6 +602,7 @@ class Home:AppCompatActivity() {
     private fun signout() {
         FirebaseAuth.getInstance().signOut()
     }
+    @SuppressLint("WrongViewCast")
     fun IDload() {
 
         val churchid: EditText = findViewById(R.id.church_id)
@@ -390,4 +637,29 @@ class Home:AppCompatActivity() {
 
 
     }
+    class EventDecorator(private val color: Int, dates: Collection<CalendarDay>) :
+        DayViewDecorator {
+        private val dates: HashSet<CalendarDay> = HashSet(dates)
+        override fun shouldDecorate(day: CalendarDay): Boolean {
+            return dates.contains(day)
+        }
+        override fun decorate(view: DayViewFacade) {
+            view.addSpan(BottomTextSpan(color))
+        }
+    }
+    class BottomTextSpan(private val color: Int) : LineBackgroundSpan {
+        override fun drawBackground(
+            c: Canvas, p: Paint, left: Int, right: Int,
+            top: Int, baseline: Int, bottom: Int,
+            text: CharSequence, start: Int, end: Int,
+            lnum: Int
+        ) {
+            val oldColor = p.color
+            p.color = color
+            c.drawCircle((right - left) / 2f, (top + -20).toFloat(), 10f, p) // Adjusted y-coordinate
+            p.color = oldColor
+        }
+    }
+
 }
+

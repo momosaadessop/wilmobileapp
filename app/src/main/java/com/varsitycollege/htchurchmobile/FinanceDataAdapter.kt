@@ -24,6 +24,7 @@ class FinanceDataAdapter(context: Context, resource: Int, objects: List<Finances
         val expenseTextView = itemView.findViewById<TextView>(R.id.typeOfExpenseTextView)
         val tithesTextView = itemView.findViewById<TextView>(R.id.tithesTextView)
         val donationsTextView = itemView.findViewById<TextView>(R.id.donationsTextView)
+        val donationSourceTextView = itemView.findViewById<TextView>(R.id.donationSourceTextView)
         val fundRaiserTextView = itemView.findViewById<TextView>(R.id.fundRaiserTextView)
         val totalAmountTextView = itemView.findViewById<TextView>(R.id.totalAmountTextView)
         val confirmationTimeTextView = itemView.findViewById<TextView>(R.id.confirmationTimeTextView)
@@ -33,6 +34,7 @@ class FinanceDataAdapter(context: Context, resource: Int, objects: List<Finances
         expenseTextView.text = financeData?.typeOfExpense
         tithesTextView.text = String.format(currencyFormat, financeData?.tithesValue)
         donationsTextView.text = String.format(currencyFormat, financeData?.donationsValue)
+        donationSourceTextView.text = financeData?.donationSource
         fundRaiserTextView.text = String.format(currencyFormat, financeData?.fundRaiserValue)
 
         val tithes = financeData?.tithesValue ?: 0.0

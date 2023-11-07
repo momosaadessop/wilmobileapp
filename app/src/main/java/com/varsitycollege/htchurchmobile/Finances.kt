@@ -127,6 +127,8 @@ class Finances : AppCompatActivity() {
                 val typeOfExpense = findViewById<EditText>(R.id.typeOfExpense).text.toString()
                 val tithesEditText = findViewById<EditText>(R.id.tighesInput)
                 val donationsEditText = findViewById<EditText>(R.id.donationsInput)
+                val donationSource = findViewById<EditText>(R.id.donationSourceInput)
+
                 val fundRaiserEditText = findViewById<EditText>(R.id.fundInput)
 
                 val tithesValue = tithesEditText.text.toString().toDoubleOrNull() ?: 0.0
@@ -146,6 +148,7 @@ class Finances : AppCompatActivity() {
                         "expenseInput" to typeOfExpense,
                         "tithes" to tithesValue,
                         "donations" to donationsValue,
+                        "donationSource" to donationSource.text.toString(),
                         "fundRaiser" to fundRaiserValue,
                         "confirmationTime" to currentTime,
                         "total" to totalAmount
@@ -192,12 +195,14 @@ class Finances : AppCompatActivity() {
                                         findViewById<EditText>(R.id.typeOfExpense).text.clear()
                                         tithesEditText.text.clear()
                                         donationsEditText.text.clear()
+                                        donationSource.text.clear()
                                         fundRaiserEditText.text.clear()
 
                                         val tithesTextView =
                                             findViewById<TextView>(R.id.tithesTextView)
                                         val donationsTextView =
                                             findViewById<TextView>(R.id.donationsTextView)
+
                                         val fundRaiserTextView =
                                             findViewById<TextView>(R.id.fundRaiserTextView)
                                         val totalAmountTextView =
@@ -215,6 +220,7 @@ class Finances : AppCompatActivity() {
                                                 String.format("R %.2f", tithesValue)
                                             donationsTextView.text =
                                                 String.format("R %.2f", donationsValue)
+
                                             fundRaiserTextView.text =
                                                 String.format("R %.2f", fundRaiserValue)
                                             totalAmountTextView.text =
@@ -298,17 +304,24 @@ class Finances : AppCompatActivity() {
             val totalTithes = financeHistoryList.sumOf { it.tithesValue }
             val totalDonations = financeHistoryList.sumOf { it.donationsValue }
             val totalFundRaised = financeHistoryList.sumOf { it.fundRaiserValue }
+            val tithesTextView = findViewById<TextView>(R.id.tithesTextView)
+            val donationsTextView = findViewById<TextView>(R.id.donationsTextView)
+            val fundRaisedTextView = findViewById<TextView>(R.id.fundRaiserTextView)
+
+            tithesTextView.text = String.format("Tithes: R %.2f", totalTithes)
+            donationsTextView.text = String.format("Donations: R %.2f", totalDonations)
+            fundRaisedTextView.text = String.format("Funds Raised: R %.2f", totalFundRaised)
 
             totalTithesTextView.text = String.format("Total Tithes: R %.2f", totalTithes)
             totalDonationsTextView.text = String.format("Total Donations: R %.2f", totalDonations)
             totalFundRaisedTextView.text = String.format("Total Fund Raised: R %.2f", totalFundRaised)
+
+            Log.d(TAG, "Total Tithes: $totalTithes")
+            Log.d(TAG, "Total Donations: $totalDonations")
+            Log.d(TAG, "Total Fund Raised: $totalFundRaised")
+
         }
     }
-
-
-
-
-
 
     fun showOverallTotal() {
         for (entry in financeHistoryList) {
@@ -353,6 +366,7 @@ class Finances : AppCompatActivity() {
                                 val typeOfExpense = entryMap["expenseInput"] as? String
                                 val tithesValue = entryMap["tithes"] as? Double
                                 val donationsValue = entryMap["donations"] as? Double
+                                val donationSource = entryMap["donationSource"] as? String ?: "No Donation Source"
                                 val fundRaiserValue =
                                     entryMap["fundRaiser"] as? Double
                                 val confirmationTime = entryMap["confirmationTime"] as Timestamp
@@ -380,6 +394,7 @@ class Finances : AppCompatActivity() {
                                         typeOfExpense,
                                         tithes,
                                         donations,
+                                        donationSource,
                                         fundRaiser,
                                         confirmationTime,
                                         month.toDouble()
@@ -515,6 +530,7 @@ class Finances : AppCompatActivity() {
         val typeOfExpense: String,
         val tithesValue: Double,
         val donationsValue: Double,
+        val donationSource: String,
         val fundRaiserValue: Double,
         val confirmationTime: Timestamp,
         var totalAmount: Double = 0.0
@@ -540,6 +556,7 @@ class Finances : AppCompatActivity() {
                     map["expenseInput"] as String,
                     (map["tithes"] as Long).toDouble(),
                     (map["donations"] as Long).toDouble(),
+                    map["donationSource"] as String,
                     (map["fundRaiser"] as Long).toDouble(),
                     map["confirmationTime"] as Timestamp
                 )
@@ -551,6 +568,7 @@ class Finances : AppCompatActivity() {
                 "expenseInput" to typeOfExpense,
                 "tithes" to tithesValue,
                 "donations" to donationsValue,
+                "donationsSource" to donationSource,
                 "fundRaiser" to fundRaiserValue,
                 "confirmationTime" to confirmationTime
             )
@@ -565,6 +583,7 @@ class Finances : AppCompatActivity() {
             return "Type of Expense: $typeOfExpense\n" +
                     "Tithes: $tithesValue\n" +
                     "Donations: $donationsValue\n" +
+                    "DonationsSource: $donationSource\n" +
                     "Fund Raiser: $fundRaiserValue\n" +
                     "Confirmation Time: $month/$date $time\n" +
                     "Total Amount: $totalAmount"

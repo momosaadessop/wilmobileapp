@@ -114,6 +114,19 @@
                     android:inputType="numberDecimal"/>
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donation Source:"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/donationSourceInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:hint="Source of Donation" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -150,7 +163,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-
                 android:text="Confirm"
                 android:layout_gravity="center_horizontal"/>
 

@@ -1,6 +1,18 @@
 
-lkotlin:S117é"NRename this parameter to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(îÑ˜C8ëàúÊ±1
-;kotlin:S6530•"Remove this unchecked cast.(´Šü¦8ôàúÊ±1
-@kotlin:S6530ù"Remove this unchecked cast.(ÆÅÏ¨ıÿÿÿÿ8ôàúÊ±1
-Qkotlin:S6518ù",Replace function call with indexed accessor.(ÆÅÏ¨ıÿÿÿÿ8ıàúÊ±1
-Lkotlin:S6518•",Replace function call with indexed accessor.(´Šü¦8ıàúÊ±1
+lkotlin:S117á"NRename this parameter to match the regular expression ^`?[_a-z][a-zA-Z0-9]*`?$(îÑ˜C8ëàúÊ±1
+@kotlin:S6530²"Remove this unchecked cast.(¿ù¶åşÿÿÿÿ8¸ÊøÒº1
+@kotlin:S6530¼"Remove this unchecked cast.(×¦‹Ûÿÿÿÿÿ8¹ÊøÒº1
+@kotlin:S6530¿"Remove this unchecked cast.(ª—ˆãşÿÿÿÿ8¹ÊøÒº1
+@kotlin:S6530ó"Remove this unchecked cast.(¿ù¶åşÿÿÿÿ8¹ÊøÒº1
+@kotlin:S6530ü"Remove this unchecked cast.(¨‘Í½ÿÿÿÿÿ8¹ÊøÒº1
+;kotlin:S6530‹"Remove this unchecked cast.(´Šü¦8ôàúÊ±1
+@kotlin:S6530ğ"Remove this unchecked cast.(ÆÅÏ¨ıÿÿÿÿ8ôàúÊ±1
+vkotlin:S1192à"QDefine a constant instead of duplicating this literal "get failed with " 8 times.(°¯†„şÿÿÿÿ8ËÊøÒº1
+vkotlin:S1192"QDefine a constant instead of duplicating this literal "No such document" 6 times.(¥ªÿùÿÿÿÿ8ËÊøÒº1
+rkotlin:S3776¤"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(Ø§Ìò8ÑÊøÒº1
+Qkotlin:S6518²",Replace function call with indexed accessor.(¿ù¶åşÿÿÿÿ8ÛÊøÒº1
+Qkotlin:S6518ó",Replace function call with indexed accessor.(¿ù¶åşÿÿÿÿ8ÛÊøÒº1
+Qkotlin:S6518ğ",Replace function call with indexed accessor.(ÆÅÏ¨ıÿÿÿÿ8ıàúÊ±1
+Lkotlin:S6518‹",Replace function call with indexed accessor.(´Šü¦8ıàúÊ±1
+Qkotlin:S6518¼",Replace function call with indexed accessor.(×¦‹Ûÿÿÿÿÿ8ÜÊøÒº1
+Qkotlin:S6518ü",Replace function call with indexed accessor.(¨‘Í½ÿÿÿÿÿ8ÜÊøÒº1
