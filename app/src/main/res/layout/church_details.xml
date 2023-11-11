@@ -4,13 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/gradient_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
     <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="70dp"
         android:layout_height="50dp"
-        android:layout_above="@id/member_recyclerView"
         android:background="@drawable/arrow_back"
         android:layout_gravity="left"/>
 
@@ -18,10 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Church Details"
+        android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textSize="35sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        />
 
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -30,8 +41,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center">
+            android:padding="15dp"
+            android:gravity="center"
+            android:background="@drawable/cardview_background">
 
             <TextView
                 android:layout_width="match_parent"
@@ -116,14 +128,15 @@
                 android:layout_height="wrap_content"
                 android:text="Confirm"
                 android:textSize="16sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="#60AE8C"/>
+                android:backgroundTint="#43AAFA"/>
 
         </LinearLayout>
 
     </ScrollView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>
