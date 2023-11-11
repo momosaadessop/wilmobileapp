@@ -82,6 +82,7 @@ class ChurchDetails : AppCompatActivity() {
     fun IDload() {
 
         val churchid: TextView = findViewById(R.id.church_id)
+        val churchname: TextView = findViewById(R.id.church_Name)
 
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -100,6 +101,8 @@ class ChurchDetails : AppCompatActivity() {
                     val userDetails = document.get("userDetails") as Map<String, Any>
 
                     val id = userDetails["churchid"].toString()
+                    val name = userDetails["church"].toString()
+                    churchname.setText(name)
                     val iddata = DataClass()
                     iddata.data = id
 
@@ -120,7 +123,7 @@ class ChurchDetails : AppCompatActivity() {
     fun Dataload(data: DataClass) {
 
 
-        val churchname: EditText = findViewById(R.id.church_Name)
+        val churchname: TextView = findViewById(R.id.church_Name)
 
         val place: EditText = findViewById(R.id.location)
 
@@ -149,11 +152,11 @@ class ChurchDetails : AppCompatActivity() {
 
                         val mno = userDetails["members"].toString()
                         val pno = userDetails["pastors"].toString()
-                        val name = userDetails["churchname"].toString()
+
                         val location = userDetails["location"].toString()
                         memberno.setText(mno)
                         pastorno.setText(pno)
-                        churchname.setText(name)
+
                         place.setText(location)
                     } catch(e:Exception)
                     {
@@ -171,7 +174,7 @@ class ChurchDetails : AppCompatActivity() {
     }
 
     fun editdata() {
-        val namefield: EditText = findViewById(R.id.church_Name)
+        val namefield: TextView= findViewById(R.id.church_Name)
         val place: EditText = findViewById(R.id.location)
 
         val memberno: EditText = findViewById(R.id.member_number)
@@ -189,7 +192,7 @@ class ChurchDetails : AppCompatActivity() {
         Log.d("userid", userID)
         val db = FirebaseFirestore.getInstance()
 
-        val name = namefield.text.toString().replace("\\s".toRegex(), "")
+        val name = namefield.text.toString()
         val location = place.text.toString().replace("\\s".toRegex(), "")
         val members = memberno.text.toString().replace("\\s".toRegex(), "")
         val pastors = pastorno.text.toString().replace("\\s".toRegex(), "")

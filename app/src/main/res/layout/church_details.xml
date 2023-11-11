@@ -40,7 +40,7 @@
                 android:textStyle="bold"
                 android:textSize="25sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/church_Name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
