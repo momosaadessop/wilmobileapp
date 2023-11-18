@@ -65,7 +65,10 @@ class Login : AppCompatActivity() {
             docRef.get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-
+                        val userDetails = document.get("userDetails") as Map<String, Any>
+                        val admincheck = userDetails["admin"].toString().lowercase()
+                  if(admincheck == "true")
+                  {
                         val auth = FirebaseAuth.getInstance()
                         auth.createUserWithEmailAndPassword(
                             emails.text.toString().lowercase(),
@@ -75,7 +78,8 @@ class Login : AppCompatActivity() {
                                 if (task.isSuccessful) {
 
                                     val user = auth.currentUser
-                                    val text = "you have claimed your credentials and have been logged in "
+                                    val text =
+                                        "you have claimed your credentials and have been logged in "
                                     val duration = Toast.LENGTH_SHORT
                                     val toast = Toast.makeText(this, text, duration)
                                     toast.show()
@@ -109,7 +113,11 @@ class Login : AppCompatActivity() {
                                                 }
 
                                                 else -> {
-                                                    val crouton = Crouton.makeText(this, e.loginError, Style.ALERT)
+                                                    val crouton = Crouton.makeText(
+                                                        this,
+                                                        e.loginError,
+                                                        Style.ALERT
+                                                    )
                                                     crouton.show()
                                                 }
                                             }
@@ -118,6 +126,11 @@ class Login : AppCompatActivity() {
 
                                 }
                             }
+                  }
+                        else{
+                      val crouton = Crouton.makeText(this,"User ${emails.text.toString()} is not an admin please speak to Your supervisor", Style.ALERT)
+                      crouton.show()
+                  }
 
                     } else {
                         val crouton = Crouton.makeText(this,"Profile is not confirmed,please save your details under the profile page of the website", Style.ALERT)
