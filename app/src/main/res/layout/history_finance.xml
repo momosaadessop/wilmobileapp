@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:stretchColumns="1"
         android:padding="16dp"
+        android:background="@drawable/table_border"
         tools:ignore="MissingConstraints"
         tools2:ignore="MissingConstraints">
 
@@ -17,10 +18,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Expense Type"
+                android:text="Expense Type:"
+                android:gravity="end"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#000000"/>
+
 
             <TextView
                 android:id="@+id/typeOfExpenseTextView"
@@ -28,9 +31,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
+                android:gravity="center"
                 android:textSize="18sp"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:drawableStart="@drawable/left"/>
+
         </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#000000"/>
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -46,19 +58,23 @@
                 android:layout_weight="1"
                 android:text="Timestamp:"
                 android:textSize="16sp"
+
                 android:textStyle="bold"
                 android:gravity="start"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                />
 
             <TextView
                 android:id="@+id/confirmationTimeTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="start"
                 android:text=""
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="16dp"
@@ -83,14 +99,9 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textSize="16sp"
+                android:gravity="start"
                 android:textColor="#000000"/>
         </TableRow>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_weight="1"
-            android:text=""
-            />
         <TableRow>
             <TextView
                 android:layout_width="0dp"
@@ -108,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
+                android:gravity="start"
                 android:textSize="16sp"
                 android:textColor="#000000" />
         </TableRow>
@@ -136,6 +148,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
+                android:gravity="start"
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
@@ -162,6 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
+                android:gravity="start"
                 android:textSize="16sp"
                 android:textColor="#000000"/>
         </TableRow>
@@ -171,7 +185,13 @@
                 android:layout_height="16dp"
                 android:layout_weight="1"
                 android:text=""
-                />
+                /><View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#000000"/>
+
         </TableRow>
 
 
@@ -179,12 +199,12 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="Total:"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:paddingEnd="8dp"
-                android:gravity="start"
+                android:gravity="end"
                 android:textColor="#000000"/>
 
             <TextView
@@ -194,6 +214,7 @@
                 android:layout_weight="1"
                 android:text=""
                 android:textSize="18sp"
+                android:gravity="end"
                 android:textColor="#000000"/>
         </TableRow>
     </TableLayout>

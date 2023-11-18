@@ -13,6 +13,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.clans.fab.FloatingActionButton
+import com.github.clans.fab.FloatingActionMenu
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -22,6 +24,7 @@ class secratary : AppCompatActivity() {
         setContentView(R.layout.secretary)
         supportActionBar?.hide()
 IDload()
+        navs()
         val loginBack = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val intent = Intent(this@secratary, Home::class.java)
@@ -135,6 +138,72 @@ IDload()
             }
 
     }
+    fun navs()
+    {
+        val menu: FloatingActionMenu = findViewById(R.id.menu)
+        val profiles: FloatingActionButton = findViewById(R.id.profile_button)
+        profiles.setOnClickListener {
+            val intent = Intent(this, Profile::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+            menu.close(true)
+        }
+
+        val members: FloatingActionButton = findViewById(R.id.member)
+        members.setOnClickListener {
+
+            val intent = Intent(this, Members::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+
+            menu.close(true)
+        }
+
+        val exit: FloatingActionButton = findViewById(R.id.sec)
+        exit.setOnClickListener {
+
+            val intent = Intent(this, Events::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+            menu.close(true)
+        }
+        val events: FloatingActionButton = findViewById(R.id.back_btns)
+        events.setOnClickListener {
+
+            val intent = Intent(this, Home::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+            menu.close(true)
+        }
+        val pastors: FloatingActionButton = findViewById(R.id.pastor)
+        pastors.setOnClickListener {
+
+            val intent = Intent(this, ViewPastors::class.java)
+
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+            menu.close(true)
+        }
+        val financials: FloatingActionButton = findViewById(R.id.finance)
+        financials.setOnClickListener {
+
+            val intent = Intent(this, Finances::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+            finish()
+            menu.close(true)
+        }
+    }
+
 }
 
 data class Sec(
