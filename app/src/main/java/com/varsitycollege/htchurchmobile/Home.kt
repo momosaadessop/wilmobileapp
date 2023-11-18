@@ -1,9 +1,11 @@
 package com.varsitycollege.htchurchmobile
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -44,6 +46,9 @@ import java.util.Calendar
 import java.util.Locale
 import android.text.Html
 import android.widget.ImageButton
+import androidx.activity.result.ActivityResult
+import java.io.File
+import java.io.FileOutputStream
 
 
 class Home:AppCompatActivity() {
@@ -496,14 +501,20 @@ class Home:AppCompatActivity() {
                     arrayOf(
                         "Take a photo?",
                         "Pick from gallery?",
+                        "Default Picture"
 
                         )
                 ) { _, which ->
                     when (which) {
 
-                        0 -> camera.launch(null)
-                        1 -> galleryContent.launch("imageURL/*")
 
+                        0 -> camera.launch(null)
+                        1 -> {
+                            val intent = Intent(Intent.ACTION_PICK)
+                            intent.type = "image/*"
+                            galleryContent.launch(intent)
+                        }
+                        2 -> noPic()
                     }
                 }
                 val actionshow = profileimage.create()
@@ -536,33 +547,38 @@ class Home:AppCompatActivity() {
 
     }
     private val galleryContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { url: Uri? ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val url: Uri? = result.data?.data
 
+                when {
+                    url != null -> {
+                        val user = FirebaseAuth.getInstance().currentUser
+                        val userEmail = user?.email
+                        val parts = userEmail!!.split('@', '.')
+                        val userID = parts[0] + parts[1]
+                        val navigationView: NavigationView = findViewById(R.id.nav_view)
+                        var image = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
 
-            when {
-                url != null -> {
-                    val user = FirebaseAuth.getInstance().currentUser
+                        image.setImageURI(url)
 
-                    val userEmail = user?.email
-                    val parts = userEmail!!.split('@', '.')
-                    val userID = parts[0] + parts[1]
-                    val navigationView: NavigationView = findViewById(R.id.nav_view)
-                    var image = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
+                        val store =
+                            Firebase.storage.reference.child(userID)
 
-                    image.setImageURI(url)
+                        val choice = store.putFile(url)
+                        choice.addOnSuccessListener {
+                            Thread(Runnable {
+                                Glide.get(applicationContext).clearDiskCache()
+                            }).start()
 
-                    val store =
-                        Firebase.storage.reference.child(userID.lowercase())
+                        }.addOnFailureListener {
 
-                    val choice = store.putFile(url)
-                    choice.addOnSuccessListener {
-
-                    }.addOnFailureListener {
-
+                        }
                     }
                 }
             }
         }
+
     private val camera =
         registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { photo: Bitmap? ->
             val user = FirebaseAuth.getInstance().currentUser
@@ -574,6 +590,8 @@ class Home:AppCompatActivity() {
             var image = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
 
 
+            val store =
+                Firebase.storage.reference.child(userID.lowercase())
 
             image.setImageBitmap(photo)
 
@@ -594,6 +612,36 @@ class Home:AppCompatActivity() {
                 Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
             }
         }
+    fun noPic() {
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        var image = navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
+        val user = FirebaseAuth.getInstance().currentUser
+
+        val userEmail = user?.email
+        val parts = userEmail!!.split('@', '.')
+        val userID = parts[0] + parts[1]
+        val noPicstore = Firebase.storage.reference.child(userID)
+
+        image.setImageResource(R.drawable.icon)
+
+        val convertNoImage = BitmapFactory.decodeResource(resources, R.drawable.icon)
+
+
+        val drawPic = File(cacheDir, "bird.png")
+        val gotten = FileOutputStream(drawPic)
+        convertNoImage.compress(Bitmap.CompressFormat.PNG, 100, gotten)
+        gotten.close()
+
+        val url = Uri.fromFile(drawPic)
+        val picsUpload = noPicstore.putFile(url)
+
+        picsUpload.addOnSuccessListener {
+
+        }.addOnFailureListener {
+
+        }
+
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             true

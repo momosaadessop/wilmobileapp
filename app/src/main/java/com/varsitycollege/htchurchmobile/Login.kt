@@ -32,6 +32,7 @@ class Login : AppCompatActivity() {
         supportActionBar?.hide()
         check()
         autologin()
+        permissions()
         var forgot = findViewById<TextView>(R.id.forgotpassword)
         forgot.setOnClickListener()
         {
