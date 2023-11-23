@@ -327,7 +327,7 @@ class Finances : AppCompatActivity() {
         }
     }
 
-    fun showOverallTotal() {
+    private fun showOverallTotal() {
         for (entry in financeHistoryList) {
             entry.calculateTotalAmount()
         }
@@ -427,6 +427,8 @@ class Finances : AppCompatActivity() {
                             totalDonationsTextView.text = String.format("Total Donations: R %.2f", totalDonations)
                             totalFundRaisedTextView.text = String.format("Total Fund Raised: R %.2f", totalFundRaised)
 
+                            fetchOverallTotal()
+
                         } else {
                             Log.d(TAG, "No finance entries found")
                         }
@@ -441,6 +443,36 @@ class Finances : AppCompatActivity() {
         } else {
             Toast.makeText(this@Finances, "Error getting church ID", Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun fetchOverallTotal() {
+        val churchsCollection = FirebaseFirestore.getInstance().collection("churchs")
+
+        churchsCollection.get().addOnSuccessListener { querySnapshot ->
+            var overallTotalAmount = 0.0
+
+            for (document in querySnapshot.documents) {
+                val financeData = document.get("finance") as Map<*, *>?
+                val entries = financeData?.get("entries") as List<Map<String, Any>>?
+
+                entries?.let {
+                    val churchTotal = it.sumOf { entry ->
+                        val tithes = entry["tithes"] as? Double ?: 0.0
+                        val donations = entry["donations"] as? Double ?: 0.0
+                        val fundRaiser = entry["fundRaiser"] as? Double ?: 0.0
+                        tithes + donations + fundRaiser
+                    }
+
+                    overallTotalAmount += churchTotal
+                }
+            }
+
+            val overallChurchsTextView = findViewById<TextView>(R.id.overallChurchsTotalTextView)
+            overallChurchsTextView.text = String.format("Overall Church Total: R %.2f", overallTotalAmount)
+        }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "Error fetching church data: $exception")
+                Toast.makeText(this@Finances, "Error fetching church data", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun calculateMonthDateAndTime(confirmationTime: Timestamp): Triple<Int, Int, String> {

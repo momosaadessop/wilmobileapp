@@ -272,8 +272,6 @@ class Home:AppCompatActivity() {
         fetchAndDisplayFinancialData()
     }
 
-
-
     private fun securGuard() {
         // this checks user tokens
         // if invalid forces the user to login again
@@ -364,57 +362,69 @@ class Home:AppCompatActivity() {
     fun GetChurchDetails() {
         val user = FirebaseAuth.getInstance().currentUser
         val userEmail = user?.email
-        val parts = userEmail!!.split('@', '.')
-        val userID = parts[0] + parts[1]
-        Log.d("userid", userID)
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("pastors").document(userID)
-        docRef.get()
-            .addOnSuccessListener { doc ->
-                if (doc != null) {
-                    Log.d(ContentValues.TAG, "DocumentSnapshot data: ${doc.data}")
-                    val userDet = doc.get("userDetails") as Map<String, Any>
-                    // Extract the church ID
-                    val id = userDet["churchid"].toString()
-                    Log.d("Church ID", "Church ID: $id")
-                    db.collection("churchs").document(id)
-                        .get()
-                        .addOnSuccessListener { churchDoc ->
-                            if (churchDoc != null) {
-                                Log.d(ContentValues.TAG, "Church DocumentSnapshot data: ${churchDoc.data}")
-                                val churchDet = churchDoc.get("churchDetails") as Map<String, Any>
-                                val churchname = churchDet["churchname"].toString()
-                                val membersNum = churchDet["members"].toString()
-                                val pastors = churchDet["pastors"].toString()
-                                val location = churchDet["location"].toString()
-                                Log.d("Location", "Location: $location")
-                                Log.d("churchname", "Location: $churchname")
-                                Log.d("membersNum", "membersNum: $membersNum")
-                                Log.d("pastors", "pastors: $pastors")
-                                // Get references to the TextViews
-                                val churchNameTextView: TextView = findViewById(R.id.churchNameTextView)
-                                val churchLocationTextView: TextView = findViewById(R.id.churchLocationTextView)
-                                val churchMembersTextView: TextView = findViewById(R.id.churchMembersTextView)
-                                val churchPastorsTextView: TextView = findViewById(R.id.churchPastorsTextView)
-                                churchNameTextView.text = Html.fromHtml("<b>Church Name:</b><br>$churchname", Html.FROM_HTML_MODE_COMPACT)
-                                churchLocationTextView.text = Html.fromHtml("<b>Location:</b><br>$location", Html.FROM_HTML_MODE_COMPACT)
-                                churchMembersTextView.text = Html.fromHtml("<b>Members:</b><br>$membersNum", Html.FROM_HTML_MODE_COMPACT)
-                                churchPastorsTextView.text = Html.fromHtml("<b>Pastors:</b><br>$pastors", Html.FROM_HTML_MODE_COMPACT)
-                            } else {
-                                Log.d("No such document", "No such document")
-                            }
+        if (userEmail != null) {
+            val parts = userEmail.split('@', '.')
+            val userID = parts[0] + parts[1]
+            Log.d("userid", userID)
+            val db = FirebaseFirestore.getInstance()
+            val docRef = db.collection("pastors").document(userID)
+            docRef.get()
+                .addOnSuccessListener { doc ->
+                    if (doc != null) {
+                        Log.d(ContentValues.TAG, "DocumentSnapshot data: ${doc.data}")
+                        val userDet = doc.get("userDetails") as? Map<String, Any>
+                        // Extract the church ID
+                        val id = userDet?.get("churchid")?.toString()
+                        if (id != null) {
+                            Log.d("Church ID", "Church ID: $id")
+                            db.collection("churchs").document(id)
+                                .get()
+                                .addOnSuccessListener { churchDoc ->
+                                    if (churchDoc != null) {
+                                        Log.d(ContentValues.TAG, "Church DocumentSnapshot data: ${churchDoc.data}")
+                                        val churchDet = churchDoc.get("churchDetails") as? Map<String, Any>
+                                        val churchname = churchDet?.get("churchname")?.toString()
+                                        val membersNum = churchDet?.get("members")?.toString()
+                                        val pastors = churchDet?.get("pastors")?.toString()
+                                        val location = churchDet?.get("location")?.toString()
+                                        if (churchname != null && membersNum != null && pastors != null && location != null) {
+                                            Log.d("Location", "Location: $location")
+                                            Log.d("churchname", "Location: $churchname")
+                                            Log.d("membersNum", "membersNum: $membersNum")
+                                            Log.d("pastors", "pastors: $pastors")
+                                            // Get references to the TextViews
+                                            val churchNameTextView: TextView = findViewById(R.id.churchNameTextView)
+                                            val churchLocationTextView: TextView = findViewById(R.id.churchLocationTextView)
+                                            val churchMembersTextView: TextView = findViewById(R.id.churchMembersTextView)
+                                            val churchPastorsTextView: TextView = findViewById(R.id.churchPastorsTextView)
+                                            churchNameTextView.text = Html.fromHtml("<b>Church Name:</b><br>$churchname", Html.FROM_HTML_MODE_COMPACT)
+                                            churchLocationTextView.text = Html.fromHtml("<b>Location:</b><br>$location", Html.FROM_HTML_MODE_COMPACT)
+                                            churchMembersTextView.text = Html.fromHtml("<b>Members:</b><br>$membersNum", Html.FROM_HTML_MODE_COMPACT)
+                                            churchPastorsTextView.text = Html.fromHtml("<b>Pastors:</b><br>$pastors", Html.FROM_HTML_MODE_COMPACT)
+                                        } else {
+                                            Log.d("No such document", "No such document")
+                                        }
+                                    } else {
+                                        Log.d("No such document", "No such document")
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.d("get failed with ", "get failed with ", exception)
+                                }
+                        } else {
+                            Log.d("No such document", "No such document")
                         }
-                        .addOnFailureListener { exception ->
-                            Log.d("get failed with ", "get failed with ", exception)
-                        }
-                } else {
-                    Log.d("No such document", "No such document")
+                    } else {
+                        Log.d("No such document", "No such document")
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("get failed with ", "get failed with ", exception)
-            }
+                .addOnFailureListener { exception ->
+                    Log.d("get failed with ", "get failed with ", exception)
+                }
+        }
     }
+
+
 
 
     fun EventClosestToCurrentDate() {
