@@ -15,13 +15,14 @@
         <TextView
             android:id="@+id/dashboard"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
             android:text="Dashboard"
             android:gravity="center"
             android:textSize="24sp"
             android:padding="16dp"
             android:background="@drawable/gradient_background"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/black"/>
 
         <ScrollView
             android:layout_width="match_parent"

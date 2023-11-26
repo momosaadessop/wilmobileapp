@@ -44,7 +44,7 @@ class FinanceDataAdapter(context: Context, resource: Int, objects: List<Finances
         totalAmountTextView.text = String.format(currencyFormat, totalAmount)
 
         val confirmationTime = financeData?.confirmationTime
-        val dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
         val formattedDate = dateFormat.format(confirmationTime?.toDate())
         confirmationTimeTextView.text = formattedDate
 
