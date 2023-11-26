@@ -56,10 +56,14 @@ class Login : AppCompatActivity() {
     fun check() {
         var login = findViewById<Button>(R.id.login_button)
         login.setOnClickListener() {
-            val emails: EditText = findViewById(R.id.usernametxt)
-            val pass: EditText = findViewById(R.id.password)
-            val parts = emails.text.split('@', '.')
-            val result = parts[0] + parts[1]
+
+            try {
+
+                val emails: EditText = findViewById(R.id.usernametxt)
+                val pass: EditText = findViewById(R.id.password)
+                val parts = emails.text.split('@', '.')
+                val result = parts[0] + parts[1]
+
             Log.d("resultemail", result)
             val db = FirebaseFirestore.getInstance()
             val docRef = db.collection("pastors").document(result.lowercase())
@@ -139,23 +143,34 @@ class Login : AppCompatActivity() {
                     }
                 }
 
-        }
+        }    catch (E:Exception)
+            {  val crouton = Crouton.makeText(this, "Fields cant be empty ", Style.ALERT)
+                crouton.show()
 
+            }
+
+        }
 
     }
     fun forgotpassword() {
         var email: EditText = findViewById(R.id.usernametxt)
-        val auth = FirebaseAuth.getInstance()
-        auth.sendPasswordResetEmail(email.text.toString())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val crouton = Crouton.makeText(this, "forgot email sent", Style.ALERT)
-                    crouton.show()
-                } else {
-                    // There was an error. Handle it here.
+        if (email.text.toString().isNullOrEmpty())
+        {
+            val crouton = Crouton.makeText(this, "Email is Empty", Style.ALERT)
+            crouton.show()
+        }
+        else {
+            val auth = FirebaseAuth.getInstance()
+            auth.sendPasswordResetEmail(email.text.toString())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val crouton = Crouton.makeText(this, "forgot email sent", Style.ALERT)
+                        crouton.show()
+                    } else {
+                        // There was an error. Handle it here.
+                    }
                 }
-            }
-
+        }
     }
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun permissions() {
