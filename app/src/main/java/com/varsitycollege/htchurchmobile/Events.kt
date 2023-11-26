@@ -189,7 +189,7 @@ class Events:AppCompatActivity() {
                 // Add event to calendar
                 calendarView.addDecorator(EventDecorator(Color.WHITE, name, listOf(day)))
                 Toast.makeText(this, "Event $name has been added successfully.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, Home::class.java)
+                val intent = Intent(this, Events::class.java)
                 intent.putExtra("eventName", name)
                 intent.putExtra("eventDate", date)
                 intent.putExtra("eventDescription", description)
